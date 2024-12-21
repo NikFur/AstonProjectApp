@@ -55,7 +55,7 @@ public class SortingApplication {
 
                     System.out.println("Тип класса: " + (classChoice == 1 ? "Животные" : classChoice == 2 ? "Бочки" : "Люди"));
                     System.out.println("Длинна элементов массива: " + arrayLength);
-                    System.out.println("Выбор опции: " +choice);
+                    System.out.println("Выбор опции: " + choice);
                     break;
                 case 4:
                     // Sort and search data
