@@ -1,4 +1,4 @@
-package Barrel;
+package com.example.Barrel;
 
 // Barrel class
 class Barrel {
