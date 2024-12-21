@@ -27,7 +27,7 @@ public class SortingApplication {
                 case 2:
                 case 3:
                     System.out.println("Выберите класс массива:");
-                    System.out.println("1. Животные");
+                    System.out.println("1. Животные ");
                     System.out.println("2. Бочки");
                     System.out.println("3. Люди");
                     int classChoice = 0;
