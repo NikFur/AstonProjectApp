@@ -1,4 +1,4 @@
-package Animal;
+package com.example.Animal;
 
 // Animal class
 class Animal {
