@@ -9,5 +9,8 @@
         <module name="AstonProjectApp" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="AstonLearningProject" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
