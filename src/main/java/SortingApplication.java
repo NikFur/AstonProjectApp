@@ -3,7 +3,7 @@ import java.util.*;
 
 public class SortingApplication {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         boolean running = true;
 
         while (running) {
@@ -16,24 +16,45 @@ public class SortingApplication {
 
             int choice = 0;
             try {
-                choice = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
+                choice = Integer.parseInt(reader.readLine());
+            } catch (NumberFormatException | IOException e) {
                 System.out.println("Введены не корректные данные, пожалуйста ввидите число.");
                 continue;
             }
 
             switch (choice) {
                 case 1:
-                    // Fill data manually
-                    System.out.println("Выбранна опция: Ручного ввода");
-                    break;
                 case 2:
-                    // Fill data randomly
-                    System.out.println("Выбранна опция: Рандомной генерации данных");
-                    break;
                 case 3:
-                    // Fill data from file
-                    System.out.println("Выбранна опция: Заполнения данных из файла");
+                    System.out.println("Выберите класс массива:");
+                    System.out.println("1. Животные");
+                    System.out.println("2. Бочки");
+                    System.out.println("3. Люди");
+                    int classChoice = 0;
+                    try {
+                        classChoice = Integer.parseInt(reader.readLine());
+                        if (classChoice < 1 || classChoice > 3) {
+                            throw new NumberFormatException();
+                        }
+                    } catch (NumberFormatException | IOException e) {
+                        System.out.println("Введены не корректные данные, пожалуйста ввидите число от 1-3");
+                        continue;
+                    }
+
+                    System.out.println("Ввидите число элементов массива:");
+                    int arrayLength = 0;
+                    try {
+                        arrayLength = Integer.parseInt(reader.readLine());
+                        if (arrayLength <= 0) {
+                            throw new NumberFormatException();
+                        }
+                    } catch (NumberFormatException | IOException e) {
+                        System.out.println("Введены не корректные данные, пожалуйста ввидите число.");
+                        continue;
+                    }
+
+                    System.out.println("Тиа класса: " + (classChoice == 1 ? "Животные" : classChoice == 2 ? "Бочки" : "Люди"));
+                    System.out.println("Длинна элементов массива: " + arrayLength);
                     break;
                 case 4:
                     // Sort and search data
