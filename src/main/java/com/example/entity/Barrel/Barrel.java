@@ -1,4 +1,4 @@
-package com.example.Barrel;
+package com.example.entity.Barrel;
 
 // Barrel class
 class Barrel {

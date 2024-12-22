@@ -1,7 +1,6 @@
-package com.example.Animal;
+package com.example.entity.Animal;
 
-// Animal class
-class Animal {
+public class Animal {
     private final String species;
     private final String eyeColor;
     private final boolean hasFur;
