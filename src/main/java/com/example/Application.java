@@ -9,13 +9,10 @@ import java.util.Scanner;
 
 import com.example.context.ArrayFillingContext;
 import com.example.entity.Animal.Animal;
-import com.example.strategy.length.FileBasedLengthStrategy;
-import com.example.strategy.length.ManualLengthStrategy;
-import com.example.strategy.length.RandomLengthStrategy;
 import com.example.strategy.fill.ManualArrayFillingStrategy;
 import com.example.strategy.fill.RandomArrayFillingStrategy;
 import com.example.strategy.fill.FileArrayFillingStrategy;
-import com.example.context.ArrayLengthContext;
+
 
 public class Application {
     public static void main(String[] args) {
