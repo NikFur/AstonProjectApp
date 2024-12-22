@@ -1,7 +1,7 @@
 package com.example.Human;
 
 // Human class
-class Human {
+public class Human {
     private final String gender;
     private final int age;
     private final String lastName;
