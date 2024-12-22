@@ -1,7 +1,7 @@
 package com.example.Barrel;
 
 // Barrel class
-class Barrel {
+public class Barrel {
     private final double volume;
     private final String storedMaterial;
     private final String material;
