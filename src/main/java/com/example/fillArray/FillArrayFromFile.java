@@ -1,7 +1,11 @@
 package com.example.fillArray;
 
+import com.example.Animal.Animal;
+import com.example.Barrel.Barrel;
 import com.example.Human.Human;
 import com.example.MyArray;
+import com.example.buildClass.BuildAnimal;
+import com.example.buildClass.BuildBarrel;
 import com.example.buildClass.BuildHuman;
 import com.example.buildClass.BuildObject;
 import com.sun.tools.javac.code.Attribute;
@@ -20,7 +24,7 @@ public class FillArrayFromFile<T> implements FillArray<T> {
     public MyArray<T> fill(int length) {
         MyArray<T> array = new MyArray<>(length);
 
-        List<T> list = getListFromFile("source_human.txt");
+        List<T> list = getListFromFile();
 
         for (int i = 0; i < length; i++) {
             array.setArr(i, list.get(i));
@@ -29,24 +33,13 @@ public class FillArrayFromFile<T> implements FillArray<T> {
         return array;
     }
 
-    private List<T> getListFromFile() throws ClassNotFoundException {
+    private List<T> getListFromFile()  {
         String fileAddress = null;
-        String clazz = null;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("Введите адрес файла");
             fileAddress = reader.readLine();
-            System.out.println("Выберите класс массива:");
-            System.out.println("Human");
-            System.out.println("Animal");
-            System.out.println("Barrel");
-            clazz = reader.readLine();
-        }catch (IOException e){
+        } catch (IOException e) {
 
-        }
-
-
-        switch (clazz){
-            case "Human": Class.forName("com.example.Human.Human");
         }
 
 
@@ -71,9 +64,30 @@ public class FillArrayFromFile<T> implements FillArray<T> {
         return listT;
     }
 
-    private T getObject(String clazz, String value1, String value2, String value3) {
-        BuildObject<clazz> object = new BuildHuman();
+    private T getObject(String value1, String value2, String value3) {
+        String clazz = null;
+        T object = null;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            System.out.println("Выберите класс массива:");
+            System.out.println("Human");
+            System.out.println("Animal");
+            System.out.println("Barrel");
+            clazz = reader.readLine();
+        } catch (IOException e) {
 
-        return (T) object.buildNewObject(value1, value2, value3);
+        }
+        switch (clazz) {
+            case "Human":
+                object = (T) new BuildHuman().buildNewObject(value1, value2, value3);
+                break;
+            case "Animal":
+                object = (T) new BuildAnimal().buildNewObject(value1, value2, value3);
+                break;
+            case "Barrel":
+               object = (T) new BuildBarrel().buildNewObject(value1, value2, value3);
+                break;
+        }
+
+        return  object;
     }
 }
