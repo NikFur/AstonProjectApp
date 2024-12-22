@@ -1,4 +1,4 @@
-package com.example.Human;
+package com.example.entity.Human;
 
 // Human class
 class Human {
