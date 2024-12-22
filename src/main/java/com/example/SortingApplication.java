@@ -1,7 +1,13 @@
 package com.example;
 
+import com.example.Animal.Animal;
+import com.example.Barrel.Barrel;
+import com.example.Human.Human;
+import com.example.RandomGenerator.RandomDataGenerator;
+
 import java.io.*;
 import java.util.*;
+
 
 public class SortingApplication {
     public static void main(String[] args) {
@@ -42,8 +48,7 @@ public class SortingApplication {
                         System.out.println("Введены не корректные данные, пожалуйста ввидите число от 1-3");
                         continue;
                     }
-
-                    System.out.println("Ввидите число элементов массива:");
+                    System.out.println("Ввидите длинну массива:");
                     int arrayLength = 0;
                     try {
                         arrayLength = Integer.parseInt(reader.readLine());
@@ -51,13 +56,70 @@ public class SortingApplication {
                             throw new NumberFormatException();
                         }
                     } catch (NumberFormatException | IOException e) {
-                        System.out.println("Введены не корректные данные, пожалуйста ввидите число.");
+                        System.out.println("Неправильное число. пожалуйста введите от 1-....");
                         continue;
                     }
-
-                    System.out.println("Тип класса: " + (classChoice == 1 ? "Животные" : classChoice == 2 ? "Бочки" : "Люди"));
-                    System.out.println("Длинна элементов массива: " + arrayLength);
-                    System.out.println("выбранная опция: " + choice);
+                    List<?> dataArray = new ArrayList<>();
+                    if (choice == 1) { // Manual data
+                        switch (classChoice) {
+                            case 1: // Animal
+                                System.out.println("Animal " + arrayLength);
+                                break;
+                            case 2: // Barrel
+                                System.out.println("Barrel " + arrayLength );
+                                break;
+                            case 3: // Human
+                                System.out.println("Human " + arrayLength );
+                                break;
+                            default:
+                                System.out.println("Неправильный выбор класса.");
+                                continue;
+                        }
+                        System.out.println("Массив загружается:");
+                        dataArray.forEach(System.out::println);
+                    }
+                    if (choice == 2) { // Random data generation
+                        switch (classChoice) {
+                            case 1: // Animal
+                                for (int i = 0; i < arrayLength; i++) {
+                                    ((List<Animal>) dataArray).add(RandomDataGenerator.generateRandomAnimal());
+                                }
+                                break;
+                            case 2: // Barrel
+                                for (int i = 0; i < arrayLength; i++) {
+                                    ((List<Barrel>) dataArray).add(RandomDataGenerator.generateRandomBarrel());
+                                }
+                                break;
+                            case 3: // Human
+                                for (int i = 0; i < arrayLength; i++) {
+                                    ((List<Human>) dataArray).add(RandomDataGenerator.generateRandomHuman());
+                                }
+                                break;
+                            default:
+                                System.out.println("Неправильный выбор класса.");
+                                continue;
+                        }
+                        System.out.println("Массив Сгенерирован:");
+                        dataArray.forEach(System.out::println);
+                    }
+                    if (choice == 3) { // From file data
+                        switch (classChoice) {
+                            case 1: // Animal
+                                System.out.println("Animal " + arrayLength);
+                                break;
+                            case 2: // Barrel
+                                System.out.println("Barrel " + arrayLength );
+                                break;
+                            case 3: // Human
+                                System.out.println("Human " + arrayLength );
+                                break;
+                            default:
+                                System.out.println("Неправильный выбор класса.");
+                                continue;
+                        }
+                        System.out.println("Массив загружается:");
+                        dataArray.forEach(System.out::println);
+                    }
                     break;
                 case 4:
                     // Sort and search data
