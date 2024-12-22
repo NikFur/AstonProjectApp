@@ -16,8 +16,7 @@ public class Application {
     private static final int MANUAL_INPUT = 1;
     private static final int FILE_INPUT = 2;
     private static final int RANDOM_INPUT = 3;
-    private static final int SORT_AND_SEARCH = 4;
-    private static final int EXIT = 5;
+    private static final int EXIT = 4;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -27,7 +26,7 @@ public class Application {
         boolean running = true;
 
         while (running) {
-            System.out.println("Выберите способ ввода данных в массив: \n 1. Вручную \n 2. Из файла \n 3. Рандомно \n 4. Сортировка и Поиск \n 5. Выход  ");
+            System.out.println("Выберите способ ввода данных в массив: \n 1. Вручную \n 2. Из файла \n 3. Рандомно \n 4. Выход  ");
 
             int inputChoice = validateIntegerInput(scanner, "Введите ваш выбор: ");
 
@@ -53,9 +52,6 @@ public class Application {
                     int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
                     fillingContext.setStrategy(new RandomArrayFillingStrategy());
                     executeArrayFillingAndSorting(fillingContext, arrayLength);
-                }
-                case SORT_AND_SEARCH -> {
-                    System.out.println("Сортировка и Поиск еще не реализованы.");
                 }
                 case EXIT -> {
                     running = false;
