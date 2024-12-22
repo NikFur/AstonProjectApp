@@ -1,11 +1,10 @@
 package com.example.strategy.fill;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
-import com.example.entity.Animal.Animal;
+
 import com.example.factory.BuildObject;
 
 
@@ -21,24 +20,20 @@ public class FileArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
     @Override
     public T[] fillArray(int length) {
         T[] array = (T[]) new Object[length];
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-
-            String line;
-            int index = 0;
-            while ((line = reader.readLine()) != null && index < length) {
-                String[] parts = line.split(",");
-                String species = parts[0];
-                String eyeColor = parts[1];
-                boolean hasFur = Boolean.parseBoolean(parts[2]);
-
-                array[index++] = new Animal.Builder()
-                        .setSpecies(species)
-                        .setEyeColor(eyeColor)
-                        .setHasFur(hasFur)
-                        .build();
-            }
+        List<String> strings = null;
+        try {
+            strings = Files.readAllLines(Paths.get(fileName));
         } catch (Exception e) {
             System.out.println("Ошибка при чтении файла: " + e.getMessage());
+        }
+        if (!strings.isEmpty()) {
+            for (int i = 0; i <array.length; i++) {
+                String[] parts = strings.get(i).split(",");
+                String value1 = parts[0];
+                String value2 = parts[1];
+                String value3 = parts[2];
+                array[i] = object.create(value1, value2, value3);
+            }
         }
         return array;
     }

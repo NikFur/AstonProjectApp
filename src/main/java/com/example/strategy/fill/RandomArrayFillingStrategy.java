@@ -1,21 +1,28 @@
 package com.example.strategy.fill;
 import com.example.entity.Animal.Animal;
+import com.example.factory.BuildObject;
+
 import java.util.Random;
 
-public class RandomArrayFillingStrategy implements ArrayFillingStrategy<Animal> {
+public class RandomArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
     private static final String[] SPECIES = {"Cat", "Dog", "Bird"};
     private static final String[] EYE_COLORS = {"Blue", "Green", "Brown"};
 
+    private final BuildObject<T> object;
+
+    public RandomArrayFillingStrategy(BuildObject<T> object) {
+        this.object = object;
+    }
+
+
     @Override
-    public Animal[] fillArray(int length) {
+    public T[] fillArray(int length) {
         Random random = new Random();
-        Animal[] array = new Animal[length];
+        T[] array = (T[]) new Object[length];
         for (int i = 0; i < length; i++) {
-            array[i] = new Animal.Builder()
-                    .setSpecies(SPECIES[random.nextInt(SPECIES.length)])
-                    .setEyeColor(EYE_COLORS[random.nextInt(EYE_COLORS.length)])
-                    .setHasFur(random.nextBoolean())
-                    .build();
+            array[i] = object.create(SPECIES[random.nextInt(SPECIES.length)]
+                    , EYE_COLORS[random.nextInt(EYE_COLORS.length)]
+            , String.valueOf(random.nextInt(50)));
         }
         return array;
     }

@@ -1,29 +1,33 @@
 package com.example.strategy.fill;
 import com.example.entity.Animal.Animal;
+import com.example.factory.BuildObject;
+
 import java.util.Scanner;
 
 
 
-public class ManualArrayFillingStrategy implements ArrayFillingStrategy<Animal> {
+public class ManualArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
+    private final BuildObject<T> object;
+
+    public ManualArrayFillingStrategy(BuildObject<T> object) {
+        this.object = object;
+    }
+
     @Override
-    public Animal[] fillArray(int length) {
+    public T[] fillArray(int length) {
         Scanner scanner = new Scanner(System.in);
-        Animal[] array = new Animal[length];
+        T[] array = (T[]) new Object[length];
         for (int i = 0; i < length; i++) {
             System.out.println("Введите данные для животного " + (i + 1) + ":");
             System.out.print("Вид: ");
-            String species = scanner.nextLine();
+            String value1 = scanner.nextLine();
             System.out.print("Цвет глаз: ");
-            String eyeColor = scanner.nextLine();
+            String value2 = scanner.nextLine();
             System.out.print("Есть ли шерсть (true/false): ");
-            boolean hasFur = scanner.nextBoolean();
+            String value3 = scanner.nextLine();
             scanner.nextLine(); // Очистка буфера
 
-            array[i] = new Animal.Builder()
-                    .setSpecies(species)
-                    .setEyeColor(eyeColor)
-                    .setHasFur(hasFur)
-                    .build();
+            array[i] = object.create(value1, value2, value3);
         }
         return array;
     }
