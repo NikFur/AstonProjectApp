@@ -26,7 +26,8 @@ public class Application {
         boolean running = true;
 
         while (running) {
-            System.out.println("Выберите способ ввода данных в массив: \n 1. Вручную \n 2. Из файла \n 3. Рандомно \n 4. Выход  ");
+            System.out.println("Выберите способ ввода данных в массив: " +
+                    "\n 1. Вручную \n 2. Из файла \n 3. Рандомно \n 4. Выход  ");
 
             int inputChoice = validateIntegerInput(scanner, "Введите ваш выбор: ");
 
