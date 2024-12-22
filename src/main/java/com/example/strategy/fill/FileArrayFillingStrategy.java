@@ -6,25 +6,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.example.entity.Animal.Animal;
+import com.example.factory.BuildObject;
 
 
-public class FileArrayFillingStrategy implements ArrayFillingStrategy<Animal> {
+public class FileArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
     private final String fileName;
+    private final BuildObject<T> object;
 
-    public FileArrayFillingStrategy(String fileName) {
+    public FileArrayFillingStrategy(String fileName, BuildObject<T> object) {
         this.fileName = fileName;
+        this.object = object;
     }
 
     @Override
-    public Animal[] fillArray(int length) {
-        Animal[] array = new Animal[length];
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                getClass().getClassLoader().getResourceAsStream(fileName)))) {
-
-            if (reader == null) {
-                System.out.println("Файл не найден в resources: " + fileName);
-                return array;
-            }
+    public T[] fillArray(int length) {
+        T[] array = (T[]) new Object[length];
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
 
             String line;
             int index = 0;
