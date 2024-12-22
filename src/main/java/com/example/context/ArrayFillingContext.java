@@ -11,7 +11,7 @@ public class ArrayFillingContext<T> {
 
     public T[] executeFill(int length) {
         if (strategy == null) {
-            throw new IllegalStateException("Стратегия заполнения массива не установлена.");
+            throw new IllegalStateException("Стратегия заполнения не установлена.");
         }
         return strategy.fillArray(length);
     }

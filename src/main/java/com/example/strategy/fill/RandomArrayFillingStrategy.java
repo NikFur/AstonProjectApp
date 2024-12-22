@@ -10,7 +10,6 @@ public class RandomArrayFillingStrategy implements ArrayFillingStrategy<Animal> 
     public Animal[] fillArray(int length) {
         Random random = new Random();
         Animal[] array = new Animal[length];
-
         for (int i = 0; i < length; i++) {
             array[i] = new Animal.Builder()
                     .setSpecies(SPECIES[random.nextInt(SPECIES.length)])
@@ -18,7 +17,6 @@ public class RandomArrayFillingStrategy implements ArrayFillingStrategy<Animal> 
                     .setHasFur(random.nextBoolean())
                     .build();
         }
-
         return array;
     }
 }

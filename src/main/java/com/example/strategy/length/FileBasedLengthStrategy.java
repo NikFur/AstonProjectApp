@@ -5,16 +5,16 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class FileBasedLengthStrategy implements ArrayLengthStrategy {
-    private final String filePath;
+    private final String fileName;
 
     public FileBasedLengthStrategy(String filePath) {
-        this.filePath = filePath;
+        this.fileName = filePath;
     }
 
     @Override
     public int getLength() {
         int count = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             while (reader.readLine() != null) {
                 count++;
             }

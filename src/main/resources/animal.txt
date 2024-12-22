@@ -1,0 +1,3 @@
+Dog,Brown,true
+Cat,Green,true
+Bird,Blue,false
