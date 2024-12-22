@@ -2,6 +2,7 @@ package com.example;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Random;
@@ -23,52 +24,66 @@ public class Application {
 
         // Контексты для стратегии заполнения массива
         ArrayFillingContext<Animal> fillingContext = new ArrayFillingContext<>();
+        boolean running = true;
 
-        // Выбор способа ввода данных в массив
-        System.out.println("Выберите способ ввода данных в массив:\n1. Вручную\n2. Из файла\n3. Рандомно");
-        int inputChoice = scanner.nextInt();
-        int arrayLength = 0; // Длина массива будет определяться автоматически или вручную
+        while (running) {
+            // Выбор способа ввода данных в массив
+            System.out.println("Выберите способ ввода данных в массив:\n1. Вручную\n2. Из файла\n3. Рандомно \n4. Cортировка и Поиск \n5. Выход");
+            int inputChoice = scanner.nextInt();
+            int arrayLength = 0; // Длина массива будет определяться автоматически или вручную
 
-        switch (inputChoice) {
-            case 1 -> {
-                // Ввод вручную
-                System.out.print("Введите длину массива: ");
-                arrayLength = scanner.nextInt();
-                fillingContext.setStrategy(new ManualArrayFillingStrategy());
-            }
-            case 2 -> {
-                // Чтение из файла
-                System.out.print("Введите имя файла (из resources): ");
-                scanner.nextLine(); // Считываем перевод строки
-                String fileName = scanner.nextLine();
-                arrayLength = calculateFileLengthFromResources(fileName);
-                if (arrayLength > 0) {
-                    fillingContext.setStrategy(new FileArrayFillingStrategy(fileName));
-                } else {
-                    System.out.println("Ошибка: Файл пуст или недоступен.");
+            switch (inputChoice) {
+                case 1 -> {
+                    // Ввод вручную
+                    System.out.print("Введите длину массива: ");
+                    arrayLength = scanner.nextInt();
+                    fillingContext.setStrategy(new ManualArrayFillingStrategy());
+                }
+                case 2 -> {
+                    // Чтение из файла
+                    System.out.print("Введите имя файла (из resources): ");
+                    scanner.nextLine(); // Считываем перевод строки
+                    String fileName = scanner.nextLine();
+                    arrayLength = calculateFileLengthFromResources(fileName);
+                    if (arrayLength > 0) {
+                        fillingContext.setStrategy(new FileArrayFillingStrategy(fileName));
+                    } else {
+                        System.out.println("Ошибка: Файл пуст или недоступен.");
+                        return;
+                    }
+                }
+                case 3 -> {
+                    // Рандомный ввод
+                    System.out.print("Введите длину массива: ");
+                    arrayLength = scanner.nextInt();
+
+
+                    //arrayLength = generateRandomLength(5, 20); // Пример диапазона длины
+                    fillingContext.setStrategy(new RandomArrayFillingStrategy());
+                }
+                case 4 -> {
+                    System.out.println("Поиск и Сортировка");
+                }
+                case 5 -> {
+                    running = false;
+                    System.out.println("Выход из приложения");
+                    break;
+                }
+                default -> {
+                    System.out.println("Неверный выбор.");
                     return;
                 }
             }
-            case 3 -> {
-                // Рандомный ввод
-                arrayLength = generateRandomLength(5, 20); // Пример диапазона длины
-                fillingContext.setStrategy(new RandomArrayFillingStrategy());
-            }
-            default -> {
-                System.out.println("Неверный выбор.");
-                return;
-            }
+
+            // Заполнение массива
+            Animal[] animals = fillingContext.executeFill(arrayLength);
+            System.out.println("Массив до сортировки: " + Arrays.toString(animals));
+
+            // Сортировка массива
+            //Arrays.sort(animals);
+            //System.out.println("Массив после сортировки: " + Arrays.toString(animals));
         }
-
-        // Заполнение массива
-        Animal[] animals = fillingContext.executeFill(arrayLength);
-        System.out.println("Массив до сортировки: " + Arrays.toString(animals));
-
-        // Сортировка массива
-        Arrays.sort(animals);
-        System.out.println("Массив после сортировки: " + Arrays.toString(animals));
     }
-
     // Метод для определения длины массива из файла в resources
     private static int calculateFileLengthFromResources(String fileName) {
         int length = 0;
