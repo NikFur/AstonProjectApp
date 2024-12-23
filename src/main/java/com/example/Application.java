@@ -71,7 +71,7 @@ public class Application {
                 case MANUAL_INPUT -> {
                     int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
                     fillingContext.setStrategy(new ManualArrayFillingStrategy<>(builder));
-                    executeArrayFillingAndSorting(fillingContext, arrayLength, scanner);
+                    searchMenu(fillingContext, arrayLength, scanner);
                 }
                 case FILE_INPUT -> {
                     System.out.print("Введите имя файла (из resources): ");
@@ -98,78 +98,75 @@ public class Application {
     }
 
     private static <T> void executeArrayFillingAndSorting(ArrayFillingContext<T> fillingContext, int arrayLength, Scanner scanner) {
-        try {
+      /* try {
             T[] dataArray = fillingContext.executeFill(arrayLength);
             System.out.println("Массив до сортировки: " + Arrays.toString(dataArray));
             Arrays.sort(dataArray);
             System.out.println("Массив после сортировки: " + Arrays.toString(dataArray));
-            searchMenu(scanner, fillingContext,dataArray);
         } catch (Exception e) {
             System.out.println("Ошибка при заполнении или сортировке массива: " + e.getMessage());
         }
+
+       */
     }
 
-    private static <T> void searchMenu(Scanner scanner, ArrayFillingContext<T> fillingContext, T[] dataArray) {
-        if (dataArray == null || dataArray.length == 0) {
-            System.out.println("Массив пуст. Выполните заполнение массива перед поиском.");
-            return;
-        }
+    private static <T> void searchMenu(ArrayFillingContext<T> fillingContext, int arrayLength, Scanner scanner) {
+        try {
 
-        System.out.println("Меню поиска по массиву:");
-        System.out.println("1. Поиск по полю species");
-        System.out.println("2. Поиск по полю eyeColor");
-        System.out.println("3. Поиск по полю hasFur");
-        System.out.println("4. Назад");
+            T[] dataArray = fillingContext.executeFill(arrayLength);
 
-        int searchChoice = validateIntegerInput(scanner, "Введите ваш выбор: ");
-        switch (searchChoice) {
-            case 1 -> {
-                System.out.print("Введите значение species для поиска: ");
-                scanner.nextLine();
-                String species = scanner.nextLine();
-                if (dataArray instanceof Animal[]) {
-                    Animal[] animals = (Animal[]) dataArray;
-                    Arrays.sort(animals, Comparator.comparing(animal -> animal.getSpecies().toLowerCase()));
-                    Animal result = AnimalBinarySearch.searchBySpecies(animals, species);
-                    System.out.println(result != null ? "Найдено: " + result : "Не найдено");
-                } else {
-                    System.out.println("Массив не содержит объектов Animal.");
+            if (dataArray.length > 0 && dataArray[0] instanceof Animal) {
+                Animal[] animals = Arrays.copyOf(dataArray, dataArray.length, Animal[].class);
+
+                System.out.println("Выберите поле для поиска:" +
+                        "\n 1. Вид (species)" +
+                        "\n 2. Цвет глаз (eyeColor)" +
+                        "\n 3. Назад");
+
+                int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
+
+                switch (searchField) {
+                    case 1 -> {
+                        Arrays.sort(animals, Comparator.comparing(Animal::getSpecies));
+                        System.out.println("Массив отсортирован по виду: " + Arrays.toString(animals));
+
+                        System.out.print("Введите вид для поиска: ");
+                        scanner.nextLine();
+                        String speciesQuery = scanner.nextLine();
+                        Animal searchResult = AnimalBinarySearch.searchBySpecies(animals, speciesQuery);
+
+                        if (searchResult != null) {
+                            System.out.println("Найдено: " + searchResult);
+                        } else {
+                            System.out.println("Объект с указанным видом не найден.");
+                        }
+                    }
+                    case 2 -> {
+                        Arrays.sort(animals, Comparator.comparing(Animal::getEyeColor));
+                        System.out.println("Массив отсортирован по цвету глаз: " + Arrays.toString(animals));
+
+                        System.out.print("Введите цвет глаз для поиска: ");
+                        scanner.nextLine();
+                        String eyeColorQuery = scanner.nextLine();
+                        Animal searchResult = AnimalBinarySearch.searchByEyeColor(animals, eyeColorQuery);
+
+                        if (searchResult != null) {
+                            System.out.println("Найдено: " + searchResult);
+                        } else {
+                            System.out.println("Объект с указанным цветом глаз не найден.");
+                        }
+                    }
+                    case 3 -> System.out.println("Возврат в предыдущее меню.");
+                    default -> System.out.println("Неверный выбор. Попробуйте снова.");
                 }
+            } else {
+                System.out.println("Массив не содержит объектов типа Animal.");
             }
-            case 2 -> {
-                System.out.print("Введите значение eyeColor для поиска: ");
-                scanner.nextLine();
-                String eyeColor = scanner.nextLine();
-                if (dataArray instanceof Animal[]) {
-                    Animal[] animals = (Animal[]) dataArray;
-                    Arrays.sort(animals, Comparator.comparing(animal -> animal.getEyeColor().toLowerCase()));
-                    int index = Arrays.binarySearch(animals, new Animal.Builder().setEyeColor(eyeColor.toLowerCase()).build(),
-                            Comparator.comparing(animal -> animal.getEyeColor().toLowerCase()));
-                    Animal result = (index >= 0) ? animals[index] : null;
-                    System.out.println(result != null ? "Найдено: " + result : "Не найдено");
-                } else {
-                    System.out.println("Массив не содержит объектов Animal.");
-                }
-            }
-            case 3 -> {
-                System.out.print("Введите значение hasFur (true/false) для поиска: ");
-                scanner.nextLine();
-                boolean hasFur = Boolean.parseBoolean(scanner.nextLine().trim());
-                if (dataArray instanceof Animal[]) {
-                    Animal[] animals = (Animal[]) dataArray;
-                    Arrays.sort(animals, Comparator.comparing(Animal::hasFur));
-                    int index = Arrays.binarySearch(animals, new Animal.Builder().setHasFur(hasFur).build(),
-                            Comparator.comparing(Animal::hasFur));
-                    Animal result = (index >= 0) ? animals[index] : null;
-                    System.out.println(result != null ? "Найдено: " + result : "Не найдено");
-                } else {
-                    System.out.println("Массив не содержит объектов Animal.");
-                }
-            }
-            case 4 -> System.out.println("Возврат в предыдущее меню.");
-            default -> System.out.println("Неверный выбор.");
+        } catch (Exception e) {
+            System.out.println("Ошибка при обработке поиска: " + e.getMessage());
         }
     }
+
 
     private static int validateIntegerInput(Scanner scanner, String prompt) {
         while (true) {

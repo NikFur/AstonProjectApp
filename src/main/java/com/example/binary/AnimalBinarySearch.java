@@ -8,9 +8,10 @@ import java.util.Comparator;
 public class AnimalBinarySearch {
 
     public static Animal searchBySpecies(Animal[] animals, String species) {
+        if (animals == null || animals.length == 0) return null;
         Arrays.sort(animals, Comparator.comparing(animal -> animal.getSpecies().toLowerCase()));
-        int index = Arrays.binarySearch(animals, new Animal.Builder().setSpecies(species.toLowerCase()).build(),
-                Comparator.comparing(animal -> animal.getSpecies().toLowerCase()));
+        Animal target = new Animal.Builder().setSpecies(species).build();
+        int index = Arrays.binarySearch(animals, target, Comparator.comparing(animal -> animal.getSpecies().toLowerCase()));
         return (index >= 0) ? animals[index] : null;
     }
 
