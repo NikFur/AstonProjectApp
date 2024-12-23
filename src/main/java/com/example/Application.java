@@ -112,10 +112,7 @@ public class Application {
 
     private static <T> void searchMenu(ArrayFillingContext<T> fillingContext, int arrayLength, Scanner scanner) {
         try {
-
             T[] dataArray = fillingContext.executeFill(arrayLength);
-
-            if (dataArray.length > 0 && dataArray[0] instanceof Animal) {
                 Animal[] animals = Arrays.copyOf(dataArray, dataArray.length, Animal[].class);
 
                 System.out.println("Выберите поле для поиска:" +
@@ -159,9 +156,6 @@ public class Application {
                     case 3 -> System.out.println("Возврат в предыдущее меню.");
                     default -> System.out.println("Неверный выбор. Попробуйте снова.");
                 }
-            } else {
-                System.out.println("Массив не содержит объектов типа Animal.");
-            }
         } catch (Exception e) {
             System.out.println("Ошибка при обработке поиска: " + e.getMessage());
         }
