@@ -3,11 +3,16 @@ package com.example;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
 
 import com.example.context.ArrayFillingContext;
 import com.example.entity.Animal.Animal;
+import com.example.entity.Human.Human;
+import com.example.entity.Barrel.Barrel;
+import com.example.factory.BuildAnimal;
+import com.example.factory.BuildBarrel;
+import com.example.factory.BuildHuman;
+import com.example.factory.BuildObject;
 import com.example.strategy.fill.FileArrayFillingStrategy;
 import com.example.strategy.fill.ManualArrayFillingStrategy;
 import com.example.strategy.fill.RandomArrayFillingStrategy;
@@ -20,40 +25,21 @@ public class Application {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        // Strategy contexts
-        ArrayFillingContext<Animal> fillingContext = new ArrayFillingContext<>();
         boolean running = true;
 
         while (running) {
-            System.out.println("Выберите способ ввода данных в массив: \n 1. Вручную \n 2. Из файла \n 3. Рандомно \n 4. Выход  ");
+            System.out.println("Выберите тип данных для заполнения массива:" +
+                    "\n 1. Animal" +
+                    "\n 2. Human" +
+                    "\n 3. Barrel" +
+                    "\n 4. Выход");
 
-            int inputChoice = validateIntegerInput(scanner, "Введите ваш выбор: ");
-
-            switch (inputChoice) {
-                case MANUAL_INPUT -> {
-                    int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
-                    fillingContext.setStrategy(new ManualArrayFillingStrategy());
-                    executeArrayFillingAndSorting(fillingContext, arrayLength);
-                }
-                case FILE_INPUT -> {
-                    System.out.print("Введите имя файла (из resources): ");
-                    scanner.nextLine(); // Consume newline
-                    String fileName = scanner.nextLine();
-                    int arrayLength = calculateFileLengthFromResources(fileName);
-                    if (arrayLength > 0) {
-                        fillingContext.setStrategy(new FileArrayFillingStrategy(fileName));
-                        executeArrayFillingAndSorting(fillingContext, arrayLength);
-                    } else {
-                        System.out.println("Ошибка: Файл пуст или недоступен.");
-                    }
-                }
-                case RANDOM_INPUT -> {
-                    int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
-                    fillingContext.setStrategy(new RandomArrayFillingStrategy());
-                    executeArrayFillingAndSorting(fillingContext, arrayLength);
-                }
-                case EXIT -> {
+            int objectType = validateIntegerInput(scanner, "Введите ваш выбор: ");
+            switch (objectType) {
+                case 1 -> handleObject(scanner, new BuildAnimal(), Animal.class);
+                case 2 -> handleObject(scanner, new BuildHuman(), Human.class);
+                case 3 -> handleObject(scanner, new BuildBarrel(), Barrel.class);
+                case 4 -> {
                     running = false;
                     System.out.println("Выход из приложения.");
                 }
@@ -64,21 +50,59 @@ public class Application {
         scanner.close();
     }
 
-    private static void executeArrayFillingAndSorting(ArrayFillingContext<Animal> fillingContext, int arrayLength) {
-        try {
-            // Fill the array using the selected strategy
-            Animal[] animals = fillingContext.executeFill(arrayLength);
-            System.out.println("Массив до сортировки: " + Arrays.toString(animals));
+    private static <T> void handleObject(Scanner scanner, BuildObject<T> builder, Class<T> typeClass) {
+        ArrayFillingContext<T> fillingContext = new ArrayFillingContext<>();
+        boolean running = true;
 
-            // Sort the array if comparable or custom comparator exists
-            Arrays.sort(animals);
-            System.out.println("Массив после сортировки: " + Arrays.toString(animals));
+        while (running) {
+            System.out.println("Выберите способ ввода данных в массив: " +
+                    "\n 1. Вручную" +
+                    "\n 2. Из файла" +
+                    "\n 3. Рандомно" +
+                    "\n 4. Назад");
+
+            int inputChoice = validateIntegerInput(scanner, "Введите ваш выбор: ");
+
+            switch (inputChoice) {
+                case MANUAL_INPUT -> {
+                    int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
+                    fillingContext.setStrategy(new ManualArrayFillingStrategy<>(builder));
+                    executeArrayFillingAndSorting(fillingContext, arrayLength);
+                }
+                case FILE_INPUT -> {
+                    System.out.print("Введите имя файла (из resources): ");
+                    scanner.nextLine();
+                    String fileName = scanner.nextLine();
+                    int arrayLength = calculateFileLengthFromResources(fileName);
+                    if (arrayLength > 0) {
+                        fillingContext.setStrategy(new FileArrayFillingStrategy<>(fileName, builder));
+                        executeArrayFillingAndSorting(fillingContext, arrayLength);
+                    } else {
+                        System.out.println("Ошибка: Файл пуст или недоступен.");
+                    }
+                }
+                case RANDOM_INPUT -> {
+                    int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
+                    fillingContext.setStrategy(new RandomArrayFillingStrategy<>(builder));
+                    executeArrayFillingAndSorting(fillingContext, arrayLength);
+                }
+                case EXIT -> running = false;
+                default -> System.out.println("Неверный выбор. Попробуйте снова.");
+            }
+        }
+    }
+
+    private static <T> void executeArrayFillingAndSorting(ArrayFillingContext<T> fillingContext, int arrayLength) {
+        try {
+            T[] dataArray = fillingContext.executeFill(arrayLength);
+            System.out.println("Массив до сортировки: " + Arrays.toString(dataArray));
+            Arrays.sort(dataArray);
+            System.out.println("Массив после сортировки: " + Arrays.toString(dataArray));
         } catch (Exception e) {
             System.out.println("Ошибка при заполнении или сортировке массива: " + e.getMessage());
         }
     }
 
-    // Validate integer input
     private static int validateIntegerInput(Scanner scanner, String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -91,12 +115,11 @@ public class Application {
                 }
             } else {
                 System.out.println("Некорректный ввод. Попробуйте снова.");
-                scanner.next(); // Clear invalid input
+                scanner.next();
             }
         }
     }
 
-    // Calculate file length from resources
     private static int calculateFileLengthFromResources(String fileName) {
         int length = 0;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(

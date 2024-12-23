@@ -1,30 +1,38 @@
 package com.example.strategy.fill;
-import com.example.entity.Animal.Animal;
+
+import com.example.factory.BuildObject;
+
+import java.util.List;
 import java.util.Scanner;
 
 
+public class ManualArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
+    private final BuildObject<T> builderFactory;
 
-public class ManualArrayFillingStrategy implements ArrayFillingStrategy<Animal> {
+    public ManualArrayFillingStrategy(BuildObject<T> builderFactory) {
+        this.builderFactory = builderFactory;
+    }
+
     @Override
-    public Animal[] fillArray(int length) {
-        Scanner scanner = new Scanner(System.in);
-        Animal[] array = new Animal[length];
-        for (int i = 0; i < length; i++) {
-            System.out.println("Введите данные для животного " + (i + 1) + ":");
-            System.out.print("Вид: ");
-            String species = scanner.nextLine();
-            System.out.print("Цвет глаз: ");
-            String eyeColor = scanner.nextLine();
-            System.out.print("Есть ли шерсть (true/false): ");
-            boolean hasFur = scanner.nextBoolean();
-            scanner.nextLine(); // Очистка буфера
+    public T[] fillArray(int length) {
+        @SuppressWarnings("unchecked")
+        T[] array = (T[]) new Object[length];
 
-            array[i] = new Animal.Builder()
-                    .setSpecies(species)
-                    .setEyeColor(eyeColor)
-                    .setHasFur(hasFur)
-                    .build();
+        List<String> questions = builderFactory.getQuestions();
+
+        for (int i = 0; i < length; i++) {
+            String[] answers = new String[questions.size()];
+            Scanner scanner = new Scanner(System.in);
+
+            for (int j = 0; j < questions.size(); j++) {
+                System.out.print(questions.get(j));
+                answers[j] = scanner.nextLine();
+            }
+
+            array[i] = builderFactory.create(answers[0], answers[1], answers[2]);
         }
+
         return array;
     }
 }
+
