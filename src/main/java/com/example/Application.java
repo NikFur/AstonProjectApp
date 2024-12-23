@@ -132,32 +132,7 @@ public class Application {
             System.out.println("Ошибка при заполнении или сортировке массива: " + e.getMessage());
         }
     }
-/*
-    private static <T> void executeArrayFillingAndSorting(ArrayFillingContext<T> fillingContext, int arrayLength) {
-        try {
-            T[] dataArray = fillingContext.executeFill(arrayLength);
-            Class<?> objectClass = dataArray.getClass().getComponentType();
-            System.out.println("Массив до сортировки: " + Arrays.toString(dataArray));
-            if (objectClass == Animal.class) {
-                timSort(dataArray, Comparator.comparing(a -> ((Animal) a).getSpecies()));
-                System.out.println("Массив после сортировки по виду: " + Arrays.toString(dataArray));
-            } else if (objectClass == Human.class) {
-                timSort(dataArray, Comparator.comparing(h -> ((Human) h).getGender())); // Сортировка по имени для класса Human
-                System.out.println("Массив после сортировки по имени: " + Arrays.toString(dataArray));
-            } else if (objectClass == Barrel.class) {
-                timSort(dataArray, Comparator.comparing(b -> ((Barrel) b).getVolume())); // Сортировка по объему для класса Barrel
-                System.out.println("Массив после сортировки по объему: " + Arrays.toString(dataArray));
-            }
-           // System.out.println("Массив до сортировки: " + Arrays.toString(dataArray));
-            //timSort(dataArray, Comparator.comparing(a -> ((Animal) a).getSpecies()));
-            // System.out.println("Массив после сортировки по виду: " + Arrays.toString(dataArray));
-           // Arrays.sort(dataArray);
-           // System.out.println("Массив после сортировки: " + Arrays.toString(dataArray));
-        } catch (Exception e) {
-            System.out.println("Ошибка при заполнении или сортировке массива: " + e.getMessage());
-        }
-    }
-*/
+
     private static int validateIntegerInput(Scanner scanner, String prompt) {
         while (true) {
             System.out.print(prompt);
