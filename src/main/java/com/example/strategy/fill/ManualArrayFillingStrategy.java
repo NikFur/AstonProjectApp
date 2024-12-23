@@ -1,31 +1,35 @@
 package com.example.strategy.fill;
 
 import com.example.factory.BuildObject;
+import com.example.getSource.GetData;
 
-import java.util.Scanner;
+import java.util.List;
+
 
 
 
 public class ManualArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
     private final BuildObject<T> object;
 
-    public ManualArrayFillingStrategy(BuildObject<T> object) {
+    private final GetData getData;
+
+    public ManualArrayFillingStrategy(BuildObject<T> object, GetData getData) {
         this.object = object;
+        this.getData = getData;
     }
+
 
     @Override
     public T[] fillArray(int length) {
-        Scanner scanner = new Scanner(System.in);
+
         T[] array = (T[]) new Object[length];
+
         for (int i = 0; i < length; i++) {
-            System.out.println("Введите данные для животного " + (i + 1) + ":");
-            System.out.print("Вид: ");
-            String value1 = scanner.nextLine();
-            System.out.print("Цвет глаз: ");
-            String value2 = scanner.nextLine();
-            System.out.print("Есть ли шерсть (true/false): ");
-            String value3 = scanner.nextLine();
-            scanner.nextLine(); // Очистка буфера
+
+            List<String> list = getData.get();
+            String value1 = list.get(0);
+            String value2 = list.get(0);
+            String value3 = list.get(0);
 
             array[i] = object.create(value1, value2, value3);
         }

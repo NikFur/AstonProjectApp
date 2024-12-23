@@ -1,18 +1,19 @@
 package com.example.strategy.fill;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 
 import com.example.factory.BuildObject;
+import com.example.getSource.file.GetDataFromFile;
 
 
 public class FileArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
     private final String fileName;
     private final BuildObject<T> object;
 
-    public FileArrayFillingStrategy(String fileName, BuildObject<T> object) {
+
+
+        public FileArrayFillingStrategy(String fileName, BuildObject<T> object) {
         this.fileName = fileName;
         this.object = object;
     }
@@ -20,12 +21,10 @@ public class FileArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
     @Override
     public T[] fillArray(int length) {
         T[] array = (T[]) new Object[length];
-        List<String> strings = null;
-        try {
-            strings = Files.readAllLines(Paths.get(fileName));
-        } catch (Exception e) {
-            System.out.println("Ошибка при чтении файла: " + e.getMessage());
-        }
+//
+        GetDataFromFile getDataFromFile = new GetDataFromFile(fileName);
+        List<String> strings = getDataFromFile.get();
+
         if (!strings.isEmpty()) {
             for (int i = 0; i <array.length; i++) {
                 String[] parts = strings.get(i).split(",");
