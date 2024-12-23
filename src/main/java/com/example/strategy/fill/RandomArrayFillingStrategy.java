@@ -1,6 +1,6 @@
 package com.example.strategy.fill;
 
-import com.example.factory.BuildObject;
+import com.example.getSource.factory.BuildObject;
 
 import java.util.Random;
 
@@ -31,37 +31,37 @@ public class RandomArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
     private String getRandomValue(BuildObject<T> builder, int index, Random random) {
         switch (index) {
             case 0 -> {
-                if (builder instanceof com.example.factory.BuildAnimal) {
+                if (builder instanceof com.example.getSource.factory.BuildAnimal) {
                     String[] species = {"Cat", "Dog", "Bird"};
                     return species[random.nextInt(species.length)];
-                } else if (builder instanceof com.example.factory.BuildHuman) {
+                } else if (builder instanceof com.example.getSource.factory.BuildHuman) {
                     String[] genders = {"Male", "Female"};
                     return genders[random.nextInt(genders.length)];
-                } else if (builder instanceof com.example.factory.BuildBarrel) {
+                } else if (builder instanceof com.example.getSource.factory.BuildBarrel) {
                     String[] volumes = {"50", "100", "200"};
                     return volumes[random.nextInt(volumes.length)];
                 }
             }
             case 1 -> {
-                if (builder instanceof com.example.factory.BuildAnimal) {
+                if (builder instanceof com.example.getSource.factory.BuildAnimal) {
                     String[] eyeColors = {"Blue", "Green", "Brown"};
                     return eyeColors[random.nextInt(eyeColors.length)];
-                } else if (builder instanceof com.example.factory.BuildHuman) {
+                } else if (builder instanceof com.example.getSource.factory.BuildHuman) {
                     String[] ages = {"20", "30", "40", "50"};
                     return ages[random.nextInt(ages.length)];
-                } else if (builder instanceof com.example.factory.BuildBarrel) {
+                } else if (builder instanceof com.example.getSource.factory.BuildBarrel) {
                     String[] materials = {"Water", "Oil", "Grain"};
                     return materials[random.nextInt(materials.length)];
                 }
             }
             case 2 -> {
-                if (builder instanceof com.example.factory.BuildAnimal) {
+                if (builder instanceof com.example.getSource.factory.BuildAnimal) {
                     String[] hasFur = {"true", "false"};
                     return hasFur[random.nextInt(hasFur.length)];
-                } else if (builder instanceof com.example.factory.BuildHuman) {
+                } else if (builder instanceof com.example.getSource.factory.BuildHuman) {
                     String[] lastNames = {"Smith", "Johnson", "Brown"};
                     return lastNames[random.nextInt(lastNames.length)];
-                } else if (builder instanceof com.example.factory.BuildBarrel) {
+                } else if (builder instanceof com.example.getSource.factory.BuildBarrel) {
                     String[] barrelMaterials = {"Wood", "Metal", "Plastic"};
                     return barrelMaterials[random.nextInt(barrelMaterials.length)];
                 }

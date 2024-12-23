@@ -1,6 +1,6 @@
 package com.example.strategy.fill;
 
-import com.example.factory.BuildObject;
+import com.example.getSource.factory.BuildObject;
 
 import java.util.List;
 import java.util.Scanner;
