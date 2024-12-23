@@ -1,72 +1,125 @@
 package com.example;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
 
 import com.example.context.ArrayFillingContext;
 import com.example.entity.Animal.Animal;
+import com.example.entity.Human.Human;
+import com.example.entity.Barrel.Barrel;
+import com.example.factory.BuildAnimal;
+import com.example.factory.BuildBarrel;
+import com.example.factory.BuildHuman;
+import com.example.factory.BuildObject;
+import com.example.strategy.fill.FileArrayFillingStrategy;
 import com.example.strategy.fill.ManualArrayFillingStrategy;
 import com.example.strategy.fill.RandomArrayFillingStrategy;
-import com.example.strategy.fill.FileArrayFillingStrategy;
-
 
 public class Application {
+    private static final int MANUAL_INPUT = 1;
+    private static final int FILE_INPUT = 2;
+    private static final int RANDOM_INPUT = 3;
+    private static final int EXIT = 4;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        boolean running = true;
 
-        // Контексты для стратегии заполнения массива
-        ArrayFillingContext<Animal> fillingContext = new ArrayFillingContext<>();
+        while (running) {
+            System.out.println("Выберите тип данных для заполнения массива:" +
+                    "\n 1. Animal" +
+                    "\n 2. Human" +
+                    "\n 3. Barrel" +
+                    "\n 4. Выход");
 
-        // Выбор способа ввода данных в массив
-        System.out.println("Выберите способ ввода данных в массив:\n1. Вручную\n2. Из файла\n3. Рандомно");
-        int inputChoice = scanner.nextInt();
-        int arrayLength = 0; // Длина массива будет определяться автоматически или вручную
-
-        switch (inputChoice) {
-            case 1 -> {
-                // Ввод вручную
-                System.out.print("Введите длину массива: ");
-                arrayLength = scanner.nextInt();
-                fillingContext.setStrategy(new ManualArrayFillingStrategy());
-            }
-            case 2 -> {
-                // Чтение из файла
-                System.out.print("Введите имя файла (из resources): ");
-                scanner.nextLine(); // Считываем перевод строки
-                String fileName = scanner.nextLine();
-                arrayLength = calculateFileLengthFromResources(fileName);
-                if (arrayLength > 0) {
-                    fillingContext.setStrategy(new FileArrayFillingStrategy(fileName));
-                } else {
-                    System.out.println("Ошибка: Файл пуст или недоступен.");
-                    return;
+            int objectType = validateIntegerInput(scanner, "Введите ваш выбор: ");
+            switch (objectType) {
+                case 1 -> handleObject(scanner, new BuildAnimal(), Animal.class);
+                case 2 -> handleObject(scanner, new BuildHuman(), Human.class);
+                case 3 -> handleObject(scanner, new BuildBarrel(), Barrel.class);
+                case 4 -> {
+                    running = false;
+                    System.out.println("Выход из приложения.");
                 }
-            }
-            case 3 -> {
-                // Рандомный ввод
-                arrayLength = generateRandomLength(5, 20); // Пример диапазона длины
-                fillingContext.setStrategy(new RandomArrayFillingStrategy());
-            }
-            default -> {
-                System.out.println("Неверный выбор.");
-                return;
+                default -> System.out.println("Неверный выбор. Попробуйте снова.");
             }
         }
 
-        // Заполнение массива
-        Animal[] animals = fillingContext.executeFill(arrayLength);
-        System.out.println("Массив до сортировки: " + Arrays.toString(animals));
-
-        // Сортировка массива
-        Arrays.sort(animals);
-        System.out.println("Массив после сортировки: " + Arrays.toString(animals));
+        scanner.close();
     }
 
-    // Метод для определения длины массива из файла в resources
+    private static <T> void handleObject(Scanner scanner, BuildObject<T> builder, Class<T> typeClass) {
+        ArrayFillingContext<T> fillingContext = new ArrayFillingContext<>();
+        boolean running = true;
+
+        while (running) {
+            System.out.println("Выберите способ ввода данных в массив: " +
+                    "\n 1. Вручную" +
+                    "\n 2. Из файла" +
+                    "\n 3. Рандомно" +
+                    "\n 4. Назад");
+
+            int inputChoice = validateIntegerInput(scanner, "Введите ваш выбор: ");
+
+            switch (inputChoice) {
+                case MANUAL_INPUT -> {
+                    int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
+                    fillingContext.setStrategy(new ManualArrayFillingStrategy<>(builder));
+                    executeArrayFillingAndSorting(fillingContext, arrayLength);
+                }
+                case FILE_INPUT -> {
+                    System.out.print("Введите имя файла (из resources): ");
+                    scanner.nextLine();
+                    String fileName = scanner.nextLine();
+                    int arrayLength = calculateFileLengthFromResources(fileName);
+                    if (arrayLength > 0) {
+                        fillingContext.setStrategy(new FileArrayFillingStrategy<>(fileName, builder));
+                        executeArrayFillingAndSorting(fillingContext, arrayLength);
+                    } else {
+                        System.out.println("Ошибка: Файл пуст или недоступен.");
+                    }
+                }
+                case RANDOM_INPUT -> {
+                    int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
+                    fillingContext.setStrategy(new RandomArrayFillingStrategy<>(builder));
+                    executeArrayFillingAndSorting(fillingContext, arrayLength);
+                }
+                case EXIT -> running = false;
+                default -> System.out.println("Неверный выбор. Попробуйте снова.");
+            }
+        }
+    }
+
+    private static <T> void executeArrayFillingAndSorting(ArrayFillingContext<T> fillingContext, int arrayLength) {
+        try {
+            T[] dataArray = fillingContext.executeFill(arrayLength);
+            System.out.println("Массив до сортировки: " + Arrays.toString(dataArray));
+            Arrays.sort(dataArray);
+            System.out.println("Массив после сортировки: " + Arrays.toString(dataArray));
+        } catch (Exception e) {
+            System.out.println("Ошибка при заполнении или сортировке массива: " + e.getMessage());
+        }
+    }
+
+    private static int validateIntegerInput(Scanner scanner, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            if (scanner.hasNextInt()) {
+                int input = scanner.nextInt();
+                if (input > 0) {
+                    return input;
+                } else {
+                    System.out.println("Введите положительное целое число.");
+                }
+            } else {
+                System.out.println("Некорректный ввод. Попробуйте снова.");
+                scanner.next();
+            }
+        }
+    }
+
     private static int calculateFileLengthFromResources(String fileName) {
         int length = 0;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -74,7 +127,7 @@ public class Application {
 
             if (reader == null) {
                 System.out.println("Файл не найден в resources: " + fileName);
-                return length;
+                return 0;
             }
 
             while (reader.readLine() != null) {
@@ -84,11 +137,5 @@ public class Application {
             System.out.println("Ошибка при чтении файла: " + e.getMessage());
         }
         return length;
-    }
-
-    // Метод для генерации случайной длины массива
-    private static int generateRandomLength(int min, int max) {
-        Random random = new Random();
-        return random.nextInt(max - min + 1) + min;
     }
 }
