@@ -74,6 +74,7 @@ public class Application {
                     int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
                     fillingContext.setStrategy(new ManualArrayFillingStrategy<>(builder));
                     executeArrayFillingAndSorting(fillingContext, arrayLength);
+                    running = false;
                 }
                 case FILE_INPUT -> {
                     System.out.print("Введите имя файла (из resources): ");
@@ -83,6 +84,7 @@ public class Application {
                     if (arrayLength > 0) {
                         fillingContext.setStrategy(new FileArrayFillingStrategy<>(fileName, builder));
                         executeArrayFillingAndSorting(fillingContext, arrayLength);
+                        running = false;
                     } else {
                         System.out.println("Ошибка: Файл пуст или недоступен.");
                     }
@@ -91,6 +93,7 @@ public class Application {
                     int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
                     fillingContext.setStrategy(new RandomArrayFillingStrategy<>(builder));
                     executeArrayFillingAndSorting(fillingContext, arrayLength);
+                    running = false;
                 }
                 case EXIT -> running = false;
                 default -> System.out.println("Неверный выбор. Попробуйте снова.");
