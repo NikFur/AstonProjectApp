@@ -3,8 +3,9 @@ package com.example.sort;
 import com.example.entity.Animal.Animal;
 import com.example.entity.Barrel.Barrel;
 import com.example.entity.Human.Human;
+import com.example.sort.FileWriter;
 
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -15,6 +16,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import static com.example.sort.FileWriter.fileToWrite;
 
 
 public class SortingService {
@@ -46,13 +49,25 @@ public class SortingService {
         System.out.println("Массив после сортировки по цвету глаз: " + Arrays.toString(animals));
         TimSort.timSort(animals, Comparator.comparing(Animal::hasFur));
         System.out.println("Массив после сортировки по наличию шерсти: " + Arrays.toString(animals));
-        // Convert Animal[] to List<String>
+        // Convert Animal[] to List<String> in the desired format
         List<String> animalList = Arrays.stream(animals)
-                .map(Animal::toString) // Convert each Animal to its string representation
-                .collect(Collectors.toList()); // Use Collectors.toList() instead of toList()
+                .map(animal -> String.format("%s,%s,%b",
+                        animal.getSpecies(),
+                        animal.getEyeColor(),
+                        animal.hasFur()))
+                .collect(Collectors.toList());
 
-        // Write the list to a file
-        fileToWrite(animalList);
+        // Ask the user whether to save the file
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Do you want to save the sorted data to a file? (yes/no): ");
+        String userResponse = scanner.nextLine().trim().toLowerCase();
+
+        if (userResponse.equals("yes") || userResponse.equals("да")) {
+            // Write the list to a file
+            fileToWrite(animalList);
+        } else {
+            System.out.println("Data was not saved to a file.");
+        }
 
     }
 
@@ -64,6 +79,24 @@ public class SortingService {
         System.out.println("Массив после сортировки по возрасту: " + Arrays.toString(humans));
         TimSort.timSort(humans, Comparator.comparing(Human::getLastName));
         System.out.println("Массив после сортировки по фамилии: " + Arrays.toString(humans));
+        // Convert Human[] to List<String> in the desired format
+        List<String> humanList = Arrays.stream(humans)
+                .map(human -> String.format("%s,%s,%b",
+                        human.getGender(),
+                        human.getAge(),
+                        human.getLastName()))
+                .collect(Collectors.toList());
+        // Ask the user whether to save the file
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Do you want to save the sorted data to a file? (yes/no): ");
+        String userResponse = scanner.nextLine().trim().toLowerCase();
+
+        if (userResponse.equals("yes") || userResponse.equals("да")) {
+            // Write the list to a file
+            fileToWrite(humanList);
+        } else {
+            System.out.println("Data was not saved to a file.");
+        }
     }
 
     private static void sortBarrels(Barrel[] barrels) {
@@ -74,43 +107,27 @@ public class SortingService {
         System.out.println("Массив после сортировки по хранимому материалу: " + Arrays.toString(barrels));
         TimSort.timSort(barrels, Comparator.comparing(Barrel::getMaterial));
         System.out.println("Массив после сортировки по материалу бочки: " + Arrays.toString(barrels));
-    }
-    private static void fileToWrite (List<String> arrayTo) {
-
-        List<String> arrayData = arrayTo;
-
-        // Create a scanner for user input
+        // Convert Barrel[] to List<String> in the desired format
+        List<String> barrelList = Arrays.stream(barrels)
+                .map(barrel -> String.format("%s,%s,%b",
+                        barrel.getVolume(),
+                        barrel.getStoredMaterial(),
+                        barrel.getMaterial()))
+                .collect(Collectors.toList());
+        // Ask the user whether to save the file
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the name of the output file (e.g., output.txt): ");
-        String fileName = scanner.nextLine();
+        System.out.print("Do you want to save the sorted data to a file? (yes/no): ");
+        String userResponse = scanner.nextLine().trim().toLowerCase();
 
-        Path filePath = Paths.get(fileName);
-
-        // Write or append the data to the file
-        appendDataToFile(filePath, arrayData);
-    }
-
-    /**
-     * Appends data to the specified file if it exists and has content,
-     * or creates a new file and writes the data if it doesn't exist.
-     *
-     * @param filePath The path to the file.
-     * @param data     The list of strings to write or append to the file.
-     */
-    private static void appendDataToFile(Path filePath, List<String> data) {
-        try {
-            if (Files.exists(filePath)) {
-                // File exists, append the data
-                Files.write(filePath, data, StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.APPEND);
-                System.out.println("Data has been appended to " + filePath.getFileName());
-            } else {
-                // File does not exist, create it and write the data
-                Files.write(filePath, data, StandardCharsets.UTF_8);
-                System.out.println("File created, and data has been written to " + filePath.getFileName());
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
+        if (userResponse.equals("yes") || userResponse.equals("да")) {
+            // Write the list to a file
+            fileToWrite(barrelList);
+        } else {
+            System.out.println("Data was not saved to a file.");
         }
+
+
     }
+
 }
 
