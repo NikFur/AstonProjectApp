@@ -72,6 +72,8 @@ public class SortingService {
         System.out.println("Массив после сортировки по возрасту: " + Arrays.toString(humans));
         TimSort.timSort(humans, Comparator.comparing(Human::getLastName));
         System.out.println("Массив после сортировки по фамилии: " + Arrays.toString(humans));
+        TimSort.timSort(humans, new AgeComparator());
+        System.out.println("Массив после сортировки по возрасту с учетом условий: " + Arrays.toString(humans));
         // Конвертация Barrel[] to List<String> Human[] to List<String>
         List<String> humanList = Arrays.stream(humans)
                 .map(human -> String.format("%s,%s,%s",
