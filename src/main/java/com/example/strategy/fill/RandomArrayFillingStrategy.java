@@ -35,7 +35,7 @@ public class RandomArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
                     String[] species = {"Cat", "Dog", "Bird"};
                     return species[random.nextInt(species.length)];
                 } else if (builder instanceof com.example.getSource.factory.BuildHuman) {
-                    String[] genders = {"Male", "Female"};
+                    String[] genders = {"Мужчина", "Женщина"};
                     return genders[random.nextInt(genders.length)];
                 } else if (builder instanceof com.example.getSource.factory.BuildBarrel) {
                     String[] volumes = {"50", "100", "200"};

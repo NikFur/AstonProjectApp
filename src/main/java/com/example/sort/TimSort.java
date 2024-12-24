@@ -5,10 +5,9 @@ import java.util.Comparator;
 public class TimSort {
     private static final int RUN = 32;
 
-    // Сортировка вставками
-    private static void insertionSort(Object[] array, int left, int right, Comparator<Object> comparator) {
+    private static <T> void insertionSort(T[] array, int left, int right, Comparator<? super T> comparator) {
         for (int i = left + 1; i <= right; i++) {
-            Object temp = array[i];
+            T temp = array[i];
             int j = i - 1;
             while (j >= left && comparator.compare(array[j], temp) > 0) {
                 array[j + 1] = array[j];
@@ -18,12 +17,11 @@ public class TimSort {
         }
     }
 
-    // Слияние двух подмассивов
-    private static void merge(Object[] array, int left, int mid, int right, Comparator<Object> comparator) {
+    private static <T> void merge(T[] array, int left, int mid, int right, Comparator<? super T> comparator) {
         int len1 = mid - left + 1;
         int len2 = right - mid;
-        Object[] leftArray = new Object[len1];
-        Object[] rightArray = new Object[len2];
+        T[] leftArray = (T[]) new Object[len1];
+        T[] rightArray = (T[]) new Object[len2];
 
         System.arraycopy(array, left, leftArray, 0, len1);
         System.arraycopy(array, mid + 1, rightArray, 0, len2);
@@ -46,8 +44,7 @@ public class TimSort {
         }
     }
 
-    // Тим-сорт
-    public static void timSort(Object[] array, Comparator<Object> comparator) {
+    public static <T> void timSort(T[] array, Comparator<? super T> comparator) {
         int n = array.length;
 
         for (int i = 0; i < n; i += RUN) {
