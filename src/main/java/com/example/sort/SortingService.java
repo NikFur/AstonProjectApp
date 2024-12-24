@@ -3,22 +3,23 @@ package com.example.sort;
 import com.example.entity.Animal.Animal;
 import com.example.entity.Barrel.Barrel;
 import com.example.entity.Human.Human;
+
 import java.util.Arrays;
 import java.util.Comparator;
 
 
-public class SortingService {
+public class SortingService<T> {
 
-    public static void sortAndPrint(Object[] dataArray) {
+    public static <T> void sortAndPrint(T[] dataArray) {
         if (dataArray == null || dataArray.length == 0) {
             System.out.println("Массив пуст.");
             return;
         }
 
-        Object firstElement = dataArray[0];
+        T firstElement = dataArray[0];
 
         if (firstElement instanceof Animal) {
-            sortAnimals( Arrays.copyOf(dataArray, dataArray.length, Animal[].class));
+            sortAnimals(Arrays.copyOf(dataArray, dataArray.length, Animal[].class));
         } else if (firstElement instanceof Human) {
             sortHumans(Arrays.copyOf(dataArray, dataArray.length, Human[].class));
         } else if (firstElement instanceof Barrel) {
