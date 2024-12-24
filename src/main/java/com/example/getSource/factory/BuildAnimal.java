@@ -14,12 +14,12 @@ public class BuildAnimal implements BuildObject<Animal> {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
             while (value1 == null || value1.trim().isEmpty()) {
-                System.out.print("Вид животного не может быть пустым. Введите вид животного: ");
+                System.out.print("Введите вид животного: ");
                 value1 = reader.readLine().trim();
             }
 
             while (value2 == null || value2.trim().isEmpty()) {
-                System.out.print("Цвет глаз животного не может быть пустым. Введите цвет глаз: ");
+                System.out.print("Введите цвет глаз: ");
                 value2 = reader.readLine().trim();
             }
 

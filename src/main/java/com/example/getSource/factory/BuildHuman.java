@@ -41,7 +41,7 @@ public class BuildHuman implements BuildObject<Human> {
             }
 
             while (value3 == null || value3.trim().isEmpty()) {
-                System.out.print("Введите фамилию человека (не может быть пустым): ");
+                System.out.print("Введите фамилию человека: ");
                 value3 = reader.readLine().trim();
             }
         } catch (IOException e) {

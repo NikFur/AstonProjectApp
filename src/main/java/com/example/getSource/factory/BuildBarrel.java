@@ -40,7 +40,7 @@ public class BuildBarrel implements BuildObject<Barrel> {
 
             // Validate and re-enter value3 (material)
             while (value3 == null || value3.trim().isEmpty()) {
-                System.out.print("Введите материал бочки (не может быть пустым): ");
+                System.out.print("Введите материал бочки: ");
                 value3 = reader.readLine().trim();
             }
         } catch (IOException e) {
