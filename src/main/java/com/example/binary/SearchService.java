@@ -1,124 +1,40 @@
-package com.example;
+package com.example.binary;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import com.example.entity.Animal.Animal;
+import com.example.entity.Barrel.Barrel;
+import com.example.entity.Human.Human;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Scanner;
 
-import com.example.binary.GenericBinarySearch;
-import com.example.binary.SearchService;
-import com.example.context.ArrayFillingContext;
-import com.example.entity.Animal.Animal;
-import com.example.entity.Human.Human;
-import com.example.entity.Barrel.Barrel;
-import com.example.getSource.factory.BuildAnimal;
-import com.example.getSource.factory.BuildBarrel;
-import com.example.getSource.factory.BuildHuman;
-import com.example.getSource.factory.BuildObject;
+public class SearchService {
 
-import com.example.sort.SortingService;
-import com.example.strategy.fill.FileArrayFillingStrategy;
-import com.example.strategy.fill.ManualArrayFillingStrategy;
-import com.example.strategy.fill.RandomArrayFillingStrategy;
+    public static void searchAndPrint(Scanner scanner, Object[] dataArray) {
 
+        if (dataArray == null || dataArray.length == 0) {
+            System.out.println("Массив пуст.");
+            return;
+        }
 
-public class Application {
-    private static final int MANUAL_INPUT = 1;
-    private static final int FILE_INPUT = 2;
-    private static final int RANDOM_INPUT = 3;
-    private static final int EXIT = 4;
+        Object firstElement = dataArray[0];
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        boolean running = true;
-
-        while (running) {
-            System.out.println("Выберите тип данных для заполнения массива:" +
-                    "\n 1. Animal" +
-                    "\n 2. Human" +
-                    "\n 3. Barrel" +
-                    "\n 4. Выход");
-
-            int objectType = validateIntegerInput(scanner, "Введите ваш выбор: ");
-            switch (objectType) {
-                case 1 -> handleObject(scanner, new BuildAnimal(), Animal.class);
-                case 2 -> handleObject(scanner, new BuildHuman(), Human.class);
-                case 3 -> handleObject(scanner, new BuildBarrel(), Barrel.class);
-                case 4 -> {
-                    running = false;
-                    System.out.println("Выход из приложения.");
-                }
-                default -> System.out.println("Неверный выбор. Попробуйте снова.");
+        if (dataArray.length > 0) {
+            if (dataArray[0] instanceof Animal) {
+                Animal[] animals = Arrays.copyOf(dataArray, dataArray.length, Animal[].class);
+                AnimalSearch(animals, scanner);
+            } else if (dataArray[0] instanceof Barrel) {
+                Barrel[] barrels = Arrays.copyOf(dataArray, dataArray.length, Barrel[].class);
+                BarrelSearch(barrels, scanner);
+            } else if (dataArray[0] instanceof Human) {
+                Human[] humans = Arrays.copyOf(dataArray, dataArray.length, Human[].class);
+                HumanSearch(humans, scanner);
+            } else {
+                System.out.println("Данный тип объектов не поддерживается для поиска.");
             }
-        }
-
-        scanner.close();
-    }
-
-    private static <T> void handleObject(Scanner scanner, BuildObject<T> builder, Class<T> typeClass) {
-        ArrayFillingContext<T> fillingContext = new ArrayFillingContext<>();
-        boolean running = true;
-
-        while (running) {
-            System.out.println("Выберите способ ввода данных в массив: " +
-                    "\n 1. Вручную" +
-                    "\n 2. Из файла" +
-                    "\n 3. Рандомно" +
-                    "\n 4. Назад");
-
-            int inputChoice = validateIntegerInput(scanner, "Введите ваш выбор: ");
-
-            switch (inputChoice) {
-                case MANUAL_INPUT -> {
-                    int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
-                    fillingContext.setStrategy(new ManualArrayFillingStrategy<>(builder));
-                    executeArrayFillingAndSorting(fillingContext, arrayLength);
-                    searchMenu(fillingContext, arrayLength, scanner);
-                    running = false;
-                }
-                case FILE_INPUT -> {
-                    System.out.print("Введите имя файла (из resources): ");
-                    scanner.nextLine();
-                    String fileName = scanner.nextLine();
-                    int arrayLength = calculateFileLengthFromResources(fileName);
-                    if (arrayLength > 0) {
-                        fillingContext.setStrategy(new FileArrayFillingStrategy<>(fileName, builder));
-                        executeArrayFillingAndSorting(fillingContext, arrayLength);
-                        searchMenu(fillingContext, arrayLength, scanner);
-                        running = false;
-                    } else {
-                        System.out.println("Ошибка: Файл пуст или недоступен.");
-                    }
-                }
-                case RANDOM_INPUT -> {
-                    int arrayLength = validateIntegerInput(scanner, "Введите длину массива: ");
-                    fillingContext.setStrategy(new RandomArrayFillingStrategy<>(builder));
-                    executeArrayFillingAndSorting(fillingContext, arrayLength);
-                    searchMenu(fillingContext, arrayLength, scanner);
-                    running = false;
-                }
-                case EXIT -> running = false;
-                default -> System.out.println("Неверный выбор. Попробуйте снова.");
-            }
-        }
-    }
-
-    private static <T> void executeArrayFillingAndSorting(ArrayFillingContext<T> fillingContext, int arrayLength) {
-        try {
-            T[] dataArray = fillingContext.executeFill(arrayLength);
-            SortingService.sortAndPrint(dataArray);
-        } catch (Exception e) {
-            System.out.println("Ошибка при заполнении или сортировке массива: " + e.getMessage());
-        }
-    }
-    private static <T> void searchMenu(ArrayFillingContext<T> fillingContext, int arrayLength, Scanner scanner) {
-        try {
-            T[] dataArray = fillingContext.executeFill(arrayLength);
-            SearchService.searchAndPrint(scanner, dataArray);
-        } catch (Exception e) {
-            System.out.println("Ошибка при обработке поиска: " + e.getMessage());
+        } else {
+            System.out.println("Массив данных пуст.");
         }
     }
 
@@ -295,22 +211,4 @@ public class Application {
         }
     }
 
-    private static int calculateFileLengthFromResources(String fileName) {
-        int length = 0;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                Application.class.getClassLoader().getResourceAsStream(fileName)))) {
-
-            if (reader == null) {
-                System.out.println("Файл не найден в resources: " + fileName);
-                return 0;
-            }
-
-            while (reader.readLine() != null) {
-                length++;
-            }
-        } catch (Exception e) {
-            System.out.println("Ошибка при чтении файла: " + e.getMessage());
-        }
-        return length;
-    }
 }
