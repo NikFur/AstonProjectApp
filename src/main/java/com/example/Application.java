@@ -3,10 +3,12 @@ package com.example;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.example.binary.AnimalBinarySearch;
+import com.example.binary.BarrelBinarySearch;
+import com.example.binary.HumanBinarySearch;
 import com.example.context.ArrayFillingContext;
 import com.example.entity.Animal.Animal;
 import com.example.entity.Human.Human;
@@ -90,7 +92,6 @@ public class Application {
                     fillingContext.setStrategy(new RandomArrayFillingStrategy<>(builder));
                     executeArrayFillingAndSorting(fillingContext, arrayLength, scanner);
                 }
-                //case SEARCH_MENU -> searchMenu(scanner, fillingContext, arrayLength);
                 case EXIT -> running = false;
                 default -> System.out.println("Неверный выбор. Попробуйте снова.");
             }
@@ -98,7 +99,7 @@ public class Application {
     }
 
     private static <T> void executeArrayFillingAndSorting(ArrayFillingContext<T> fillingContext, int arrayLength, Scanner scanner) {
-      /* try {
+       try {
             T[] dataArray = fillingContext.executeFill(arrayLength);
             System.out.println("Массив до сортировки: " + Arrays.toString(dataArray));
             Arrays.sort(dataArray);
@@ -107,57 +108,173 @@ public class Application {
             System.out.println("Ошибка при заполнении или сортировке массива: " + e.getMessage());
         }
 
-       */
+
     }
 
     private static <T> void searchMenu(ArrayFillingContext<T> fillingContext, int arrayLength, Scanner scanner) {
         try {
             T[] dataArray = fillingContext.executeFill(arrayLength);
-                Animal[] animals = Arrays.copyOf(dataArray, dataArray.length, Animal[].class);
 
-                System.out.println("Выберите поле для поиска:" +
-                        "\n 1. Вид (species)" +
-                        "\n 2. Цвет глаз (eyeColor)" +
-                        "\n 3. Назад");
-
-                int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
-
-                switch (searchField) {
-                    case 1 -> {
-                        Arrays.sort(animals, Comparator.comparing(Animal::getSpecies));
-                        System.out.println("Массив отсортирован по виду: " + Arrays.toString(animals));
-
-                        System.out.print("Введите вид для поиска: ");
-                        scanner.nextLine();
-                        String speciesQuery = scanner.nextLine();
-                        Animal searchResult = AnimalBinarySearch.searchBySpecies(animals, speciesQuery);
-
-                        if (searchResult != null) {
-                            System.out.println("Найдено: " + searchResult);
-                        } else {
-                            System.out.println("Объект с указанным видом не найден.");
-                        }
-                    }
-                    case 2 -> {
-                        Arrays.sort(animals, Comparator.comparing(Animal::getEyeColor));
-                        System.out.println("Массив отсортирован по цвету глаз: " + Arrays.toString(animals));
-
-                        System.out.print("Введите цвет глаз для поиска: ");
-                        scanner.nextLine();
-                        String eyeColorQuery = scanner.nextLine();
-                        Animal searchResult = AnimalBinarySearch.searchByEyeColor(animals, eyeColorQuery);
-
-                        if (searchResult != null) {
-                            System.out.println("Найдено: " + searchResult);
-                        } else {
-                            System.out.println("Объект с указанным цветом глаз не найден.");
-                        }
-                    }
-                    case 3 -> System.out.println("Возврат в предыдущее меню.");
-                    default -> System.out.println("Неверный выбор. Попробуйте снова.");
+            if (dataArray.length > 0) {
+                if (dataArray[0] instanceof Animal) {
+                    Animal[] animals = Arrays.copyOf(dataArray, dataArray.length, Animal[].class);
+                    AnimalSearch(animals, scanner);
+                } else if (dataArray[0] instanceof Barrel) {
+                    Barrel[] barrels = Arrays.copyOf(dataArray, dataArray.length, Barrel[].class);
+                    BarrelSearch(barrels, scanner);
+                } else if (dataArray[0] instanceof Human) {
+                    Human[] humans = Arrays.copyOf(dataArray, dataArray.length, Human[].class);
+                    HumanSearch(humans, scanner);
+                } else {
+                    System.out.println("Данный тип объектов не поддерживается для поиска.");
                 }
+            } else {
+                System.out.println("Массив данных пуст.");
+            }
         } catch (Exception e) {
             System.out.println("Ошибка при обработке поиска: " + e.getMessage());
+        }
+    }
+
+    private static void AnimalSearch(Animal[] animals, Scanner scanner) {
+        System.out.println("Выберите поле для поиска (Животные):" +
+                "\n 1. Вид" +
+                "\n 2. Цвет глаз" +
+                "\n 3. Наличие шерсти" +
+                "\n 4. Назад");
+
+        int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
+        switch (searchField) {
+            case 1 -> {
+                System.out.print("Введите вид для поиска: ");
+                scanner.nextLine();
+                String species = scanner.nextLine();
+
+                Optional<Animal> searchResult = AnimalBinarySearch.searchBySpecies(animals, species);
+                searchResult.ifPresentOrElse(
+                        animal -> System.out.println("Найдено: " + animal),
+                        () -> System.out.println("Животное с указанным видом не найдено.")
+                );
+            }
+            case 2 -> {
+                System.out.print("Введите цвет глаз для поиска: ");
+                scanner.nextLine();
+                String eyeColor = scanner.nextLine();
+
+                Optional<Animal> searchResult = AnimalBinarySearch.searchByEyeColor(animals, eyeColor);
+                searchResult.ifPresentOrElse(
+                        animal -> System.out.println("Найдено: " + animal),
+                        () -> System.out.println("Животное с указанным цветом глаз не найдено.")
+                );
+            }
+            case 3 -> {
+                System.out.print("Введите наличие шерсти (true/false) для поиска: ");
+                scanner.nextLine();
+                boolean hasFur = Boolean.parseBoolean(scanner.nextLine());
+
+                Optional<Animal> searchResult = AnimalBinarySearch.searchByHasFur(animals, hasFur);
+                searchResult.ifPresentOrElse(
+                        animal -> System.out.println("Найдено: " + animal),
+                        () -> System.out.println("Животное с указанным параметром наличия шерсти не найдено.")
+                );
+            }
+            case 4 -> System.out.println("Возврат в предыдущее меню.");
+            default -> System.out.println("Неверный выбор. Попробуйте снова.");
+        }
+    }
+
+    private static void BarrelSearch(Barrel[] barrels, Scanner scanner) {
+        System.out.println("Выберите поле для поиска (Бочки):" +
+                "\n 1. Объём" +
+                "\n 2. Хранимый материал" +
+                "\n 3. Материал бочки" +
+                "\n 4. Назад");
+
+        int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
+        switch (searchField) {
+            case 1 -> {
+                System.out.print("Введите объём для поиска: ");
+                scanner.nextLine();
+                double volume = Double.parseDouble(scanner.nextLine());
+
+                Optional<Barrel> searchResult = BarrelBinarySearch.searchByVolume(barrels, volume);
+                searchResult.ifPresentOrElse(
+                        barrel -> System.out.println("Найдено: " + barrel),
+                        () -> System.out.println("Бочка с указанным объёмом не найдена.")
+                );
+            }
+            case 2 -> {
+                System.out.print("Введите хранимый материал для поиска: ");
+                scanner.nextLine();
+                String storedMaterial = scanner.nextLine();
+
+                Optional<Barrel> searchResult = BarrelBinarySearch.searchByStoredMaterial(barrels, storedMaterial);
+                searchResult.ifPresentOrElse(
+                        barrel -> System.out.println("Найдено: " + barrel),
+                        () -> System.out.println("Бочка с указанным хранимым материалом не найдена.")
+                );
+            }
+
+            case 3 -> {
+                System.out.print("Введите материал бочки для поиска: ");
+                scanner.nextLine();
+                String material = scanner.nextLine();
+
+                Optional<Barrel> searchResult = BarrelBinarySearch.searchByMaterial(barrels, material);
+                searchResult.ifPresentOrElse(
+                        barrel -> System.out.println("Найдено: " + barrel),
+                        () -> System.out.println("Бочка с указанным материалом не найдена.")
+                );
+            }
+            case 4 -> System.out.println("Возврат в предыдущее меню.");
+            default -> System.out.println("Неверный выбор. Попробуйте снова.");
+        }
+    }
+
+    private static void HumanSearch(Human[] humans, Scanner scanner) {
+        System.out.println("Выберите поле для поиска (Люди):" +
+                "\n 1. Пол" +
+                "\n 2. Возраст" +
+                "\n 3. Фамилия" +
+                "\n 4. Назад");
+
+        int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
+        switch (searchField) {
+            case 1 -> {
+                System.out.print("Введите пол для поиска: ");
+                scanner.nextLine();
+                String gender = scanner.nextLine();
+
+                Optional<Human> searchResult = HumanBinarySearch.searchByGender(humans, gender);
+                searchResult.ifPresentOrElse(
+                        human -> System.out.println("Найдено: " + human),
+                        () -> System.out.println("Человек с указанным полом не найден.")
+                );
+            }
+            case 2 -> {
+                System.out.print("Введите возраст для поиска: ");
+                scanner.nextLine();
+                int age = Integer.parseInt(scanner.nextLine());
+
+                Optional<Human> searchResult = HumanBinarySearch.searchByAge(humans, age);
+                searchResult.ifPresentOrElse(
+                        human -> System.out.println("Найдено: " + human),
+                        () -> System.out.println("Человек с указанным возрастом не найден.")
+                );
+            }
+            case 3 -> {
+                System.out.print("Введите фамилию для поиска: ");
+                scanner.nextLine();
+                String lastName = scanner.nextLine();
+
+                Optional<Human> searchResult = HumanBinarySearch.searchByLastName(humans, lastName);
+                searchResult.ifPresentOrElse(
+                        human -> System.out.println("Найдено: " + human),
+                        () -> System.out.println("Человек с указанной фамилией не найден.")
+                );
+            }
+            case 4 -> System.out.println("Возврат в предыдущее меню.");
+            default -> System.out.println("Неверный выбор. Попробуйте снова.");
         }
     }
 
