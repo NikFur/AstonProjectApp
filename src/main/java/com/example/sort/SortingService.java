@@ -72,7 +72,7 @@ public class SortingService {
         System.out.println("Массив после сортировки по возрасту: " + Arrays.toString(humans));
         TimSort.timSort(humans, Comparator.comparing(Human::getLastName));
         System.out.println("Массив после сортировки по фамилии: " + Arrays.toString(humans));
-        TimSort.timSort(humans, new AgeComparator());
+        TimSort.timSort(humans, new AgeAndVolComparator());
         System.out.println("Массив после сортировки по возрасту с учетом условий: " + Arrays.toString(humans));
         // Конвертация Barrel[] to List<String> Human[] to List<String>
         List<String> humanList = Arrays.stream(humans)
@@ -102,6 +102,8 @@ public class SortingService {
         System.out.println("Массив после сортировки по хранимому материалу: " + Arrays.toString(barrels));
         TimSort.timSort(barrels, Comparator.comparing(Barrel::getMaterial));
         System.out.println("Массив после сортировки по материалу бочки: " + Arrays.toString(barrels));
+        TimSort.timSort(barrels, new AgeAndVolComparator());
+        System.out.println("Массив после сортировки по объему с учетом условий: " + Arrays.toString(barrels));
         // Конвертация Barrel[] to List<String>
         List<String> barrelList = Arrays.stream(barrels)
                 .map(barrel -> String.format("%s,%s,%s",
