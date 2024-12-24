@@ -16,16 +16,16 @@ import static com.example.sort.FileWriter.fileToWrite;
 
 public class SortingService {
 
-    public static void sortAndPrint(Object[] dataArray) {
+    public static <T> void sortAndPrint(T[] dataArray) {
         if (dataArray == null || dataArray.length == 0) {
             System.out.println("Массив пуст.");
             return;
         }
 
-        Object firstElement = dataArray[0];
+        T firstElement = dataArray[0];
 
         if (firstElement instanceof Animal) {
-            sortAnimals( Arrays.copyOf(dataArray, dataArray.length, Animal[].class));
+            sortAnimals(Arrays.copyOf(dataArray, dataArray.length, Animal[].class));
         } else if (firstElement instanceof Human) {
             sortHumans(Arrays.copyOf(dataArray, dataArray.length, Human[].class));
         } else if (firstElement instanceof Barrel) {
