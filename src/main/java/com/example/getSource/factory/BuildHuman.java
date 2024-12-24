@@ -13,7 +13,6 @@ public class BuildHuman implements BuildObject<Human> {
     public Human create(String value1, String value2, String value3) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
-            // Validate and re-enter value1 (gender)
             while (value1 == null || value1.trim().isEmpty() || (!value1.equalsIgnoreCase("Мужчина") && !value1.equalsIgnoreCase("Женщина"))) {
                 System.out.print("Введите пол человека (Мужчина/Женщина): ");
                 value1 = reader.readLine().trim();
@@ -22,7 +21,6 @@ public class BuildHuman implements BuildObject<Human> {
                 }
             }
 
-            // Validate and re-enter value2 (age)
             while (true) {
                 try {
                     if (value2 == null || value2.trim().isEmpty()) {
@@ -34,15 +32,14 @@ public class BuildHuman implements BuildObject<Human> {
                         break;
                     } else {
                         System.out.println("Возраст должен быть положительным числом.");
-                        value2 = null; // Reset for re-entry
+                        value2 = null;
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Пожалуйста, введите корректное целое число.");
-                    value2 = null; // Reset for re-entry
+                    value2 = null;
                 }
             }
 
-            // Validate and re-enter value3 (last name)
             while (value3 == null || value3.trim().isEmpty()) {
                 System.out.print("Введите фамилию человека (не может быть пустым): ");
                 value3 = reader.readLine().trim();
@@ -51,7 +48,6 @@ public class BuildHuman implements BuildObject<Human> {
             throw new RuntimeException("Произошла ошибка ввода-вывода: " + e.getMessage(), e);
         }
 
-        // Create and return the Human object
         Human.Builder builder = new Human.Builder();
         return builder
                 .setGender(value1)

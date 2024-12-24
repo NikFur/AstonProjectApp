@@ -14,11 +14,12 @@ import com.example.getSource.factory.BuildAnimal;
 import com.example.getSource.factory.BuildBarrel;
 import com.example.getSource.factory.BuildHuman;
 import com.example.getSource.factory.BuildObject;
+
+import com.example.sort.SortingService;
 import com.example.strategy.fill.FileArrayFillingStrategy;
 import com.example.strategy.fill.ManualArrayFillingStrategy;
 import com.example.strategy.fill.RandomArrayFillingStrategy;
 
-import static com.example.sort.TimSort.timSort;
 
 public class Application {
     private static final int MANUAL_INPUT = 1;
@@ -98,36 +99,7 @@ public class Application {
     private static <T> void executeArrayFillingAndSorting(ArrayFillingContext<T> fillingContext, int arrayLength) {
         try {
             T[] dataArray = fillingContext.executeFill(arrayLength);
-            if (dataArray.length > 0 && dataArray[0] instanceof Animal) {
-                System.out.println("Массив до сортировки: " + Arrays.toString(dataArray));
-                timSort(dataArray, Comparator.comparing(a -> ((Animal) a).getSpecies()));
-                System.out.println("Массив после сортировки по виду: " + Arrays.toString(dataArray));
-                timSort(dataArray, Comparator.comparing(a -> ((Animal) a).getEyeColor()));
-                System.out.println("Массив после сортировки по цвету глаз: " + Arrays.toString(dataArray));
-                timSort(dataArray, Comparator.comparing(a -> ((Animal) a).hasFur()));
-                System.out.println("Массив после сортировки по наличии шерсти: " + Arrays.toString(dataArray));
-            }
-            else if (dataArray.length > 0 && dataArray[0] instanceof Human) {
-                System.out.println("Массив до сортировки: " + Arrays.toString(dataArray));
-                timSort(dataArray, Comparator.comparing(h -> ((Human) h).getGender()));
-                System.out.println("Массив после сортировки по полу: " + Arrays.toString(dataArray));
-                timSort(dataArray, Comparator.comparing(h -> ((Human) h).getAge()));
-                System.out.println("Массив после сортировки по возрасту: " + Arrays.toString(dataArray));
-                timSort(dataArray, Comparator.comparing(h -> ((Human) h).getLastName()));
-                System.out.println("Массив после сортировки по фамилии: " + Arrays.toString(dataArray));
-            }
-            else if (dataArray.length > 0 && dataArray[0] instanceof Barrel) {
-                System.out.println("Массив до сортировки: " + Arrays.toString(dataArray));
-                timSort(dataArray, Comparator.comparing(b -> ((Barrel) b).getVolume()));
-                System.out.println("Массив после сортировки по объему: " + Arrays.toString(dataArray));
-                timSort(dataArray, Comparator.comparing(b -> ((Barrel) b).getStoredMaterial()));
-                System.out.println("Массив после сортировки по хранимому материалу: " + Arrays.toString(dataArray));
-                timSort(dataArray, Comparator.comparing(b -> ((Barrel) b).getMaterial()));
-                System.out.println("Массив после сортировки по материалу бочки: " + Arrays.toString(dataArray));
-            }
-            else {
-                System.out.println("Тип массива не поддерживается для сортировки.");
-            }
+            SortingService.sortAndPrint(dataArray);
         } catch (Exception e) {
             System.out.println("Ошибка при заполнении или сортировке массива: " + e.getMessage());
         }
