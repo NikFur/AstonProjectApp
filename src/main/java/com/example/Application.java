@@ -3,12 +3,11 @@ package com.example;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.Scanner;
 
-import com.example.binary.AnimalBinarySearch;
-import com.example.binary.BarrelBinarySearch;
-import com.example.binary.HumanBinarySearch;
+import com.example.binary.*;
 import com.example.context.ArrayFillingContext;
 import com.example.entity.Animal.Animal;
 import com.example.entity.Human.Human;
@@ -144,14 +143,17 @@ public class Application {
                 "\n 4. Назад");
 
         int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
+        GenericBinarySearch<Animal> search = new GenericBinarySearch<>();
+
         switch (searchField) {
             case 1 -> {
                 System.out.print("Введите вид для поиска: ");
                 scanner.nextLine();
                 String species = scanner.nextLine();
-
-                Optional<Animal> searchResult = AnimalBinarySearch.searchBySpecies(animals, species);
-                searchResult.ifPresentOrElse(
+                Animal target = new Animal.Builder().setSpecies(species).build();
+                Comparator<Animal> speciesComparator = Comparator.comparing(Animal::getSpecies);
+                Optional<Animal> result = search.search(animals, target, speciesComparator);
+                result.ifPresentOrElse(
                         animal -> System.out.println("Найдено: " + animal),
                         () -> System.out.println("Животное с указанным видом не найдено.")
                 );
@@ -160,9 +162,10 @@ public class Application {
                 System.out.print("Введите цвет глаз для поиска: ");
                 scanner.nextLine();
                 String eyeColor = scanner.nextLine();
-
-                Optional<Animal> searchResult = AnimalBinarySearch.searchByEyeColor(animals, eyeColor);
-                searchResult.ifPresentOrElse(
+                Animal target = new Animal.Builder().setEyeColor(eyeColor).build();
+                Comparator<Animal> eyeColorComparator = Comparator.comparing(Animal::getEyeColor);
+                Optional<Animal> result = search.search(animals, target, eyeColorComparator);
+                result.ifPresentOrElse(
                         animal -> System.out.println("Найдено: " + animal),
                         () -> System.out.println("Животное с указанным цветом глаз не найдено.")
                 );
@@ -171,9 +174,10 @@ public class Application {
                 System.out.print("Введите наличие шерсти (true/false) для поиска: ");
                 scanner.nextLine();
                 boolean hasFur = Boolean.parseBoolean(scanner.nextLine());
-
-                Optional<Animal> searchResult = AnimalBinarySearch.searchByHasFur(animals, hasFur);
-                searchResult.ifPresentOrElse(
+                Animal target = new Animal.Builder().setHasFur(hasFur).build();
+                Comparator<Animal> hasFurComparator = Comparator.comparing(Animal::hasFur);
+                Optional<Animal> result = search.search(animals, target, hasFurComparator);
+                result.ifPresentOrElse(
                         animal -> System.out.println("Найдено: " + animal),
                         () -> System.out.println("Животное с указанным параметром наличия шерсти не найдено.")
                 );
@@ -191,37 +195,41 @@ public class Application {
                 "\n 4. Назад");
 
         int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
+        GenericBinarySearch<Barrel> search = new GenericBinarySearch<>();
+
         switch (searchField) {
             case 1 -> {
                 System.out.print("Введите объём для поиска: ");
                 scanner.nextLine();
                 double volume = Double.parseDouble(scanner.nextLine());
-
-                Optional<Barrel> searchResult = BarrelBinarySearch.searchByVolume(barrels, volume);
-                searchResult.ifPresentOrElse(
+                Barrel target = new Barrel.Builder().setVolume(volume).build();
+                Comparator<Barrel> volumeComparator = Comparator.comparingDouble(Barrel::getVolume);
+                Optional<Barrel> result = search.search(barrels, target, volumeComparator);
+                result.ifPresentOrElse(
                         barrel -> System.out.println("Найдено: " + barrel),
-                        () -> System.out.println("Бочка с указанным объёмом не найдена.")
+                        () -> System.out.println("Бочка с таким объемом не найдена.")
                 );
             }
             case 2 -> {
                 System.out.print("Введите хранимый материал для поиска: ");
                 scanner.nextLine();
                 String storedMaterial = scanner.nextLine();
-
-                Optional<Barrel> searchResult = BarrelBinarySearch.searchByStoredMaterial(barrels, storedMaterial);
-                searchResult.ifPresentOrElse(
+                Barrel target = new Barrel.Builder().setStoredMaterial(storedMaterial).build();
+                Comparator<Barrel> storedMaterialComparator = Comparator.comparing(Barrel::getStoredMaterial);
+                Optional<Barrel> result = search.search(barrels, target, storedMaterialComparator);
+                result.ifPresentOrElse(
                         barrel -> System.out.println("Найдено: " + barrel),
                         () -> System.out.println("Бочка с указанным хранимым материалом не найдена.")
                 );
             }
-
             case 3 -> {
                 System.out.print("Введите материал бочки для поиска: ");
                 scanner.nextLine();
                 String material = scanner.nextLine();
-
-                Optional<Barrel> searchResult = BarrelBinarySearch.searchByMaterial(barrels, material);
-                searchResult.ifPresentOrElse(
+                Barrel target = new Barrel.Builder().setMaterial(material).build();
+                Comparator<Barrel> materialComparator = Comparator.comparing(Barrel::getMaterial);
+                Optional<Barrel> result = search.search(barrels, target, materialComparator);
+                result.ifPresentOrElse(
                         barrel -> System.out.println("Найдено: " + barrel),
                         () -> System.out.println("Бочка с указанным материалом не найдена.")
                 );
@@ -239,14 +247,17 @@ public class Application {
                 "\n 4. Назад");
 
         int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
+        GenericBinarySearch<Human> search = new GenericBinarySearch<>();
+
         switch (searchField) {
             case 1 -> {
                 System.out.print("Введите пол для поиска: ");
                 scanner.nextLine();
                 String gender = scanner.nextLine();
-
-                Optional<Human> searchResult = HumanBinarySearch.searchByGender(humans, gender);
-                searchResult.ifPresentOrElse(
+                Human target = new Human.Builder().setGender(gender).build();
+                Comparator<Human> genderComparator = Comparator.comparing(Human::getGender);
+                Optional<Human> result = search.search(humans, target, genderComparator);
+                result.ifPresentOrElse(
                         human -> System.out.println("Найдено: " + human),
                         () -> System.out.println("Человек с указанным полом не найден.")
                 );
@@ -255,9 +266,10 @@ public class Application {
                 System.out.print("Введите возраст для поиска: ");
                 scanner.nextLine();
                 int age = Integer.parseInt(scanner.nextLine());
-
-                Optional<Human> searchResult = HumanBinarySearch.searchByAge(humans, age);
-                searchResult.ifPresentOrElse(
+                Human target = new Human.Builder().setAge(age).build();
+                Comparator<Human> ageComparator = Comparator.comparingInt(Human::getAge);
+                Optional<Human> result = search.search(humans, target, ageComparator);
+                result.ifPresentOrElse(
                         human -> System.out.println("Найдено: " + human),
                         () -> System.out.println("Человек с указанным возрастом не найден.")
                 );
@@ -266,9 +278,10 @@ public class Application {
                 System.out.print("Введите фамилию для поиска: ");
                 scanner.nextLine();
                 String lastName = scanner.nextLine();
-
-                Optional<Human> searchResult = HumanBinarySearch.searchByLastName(humans, lastName);
-                searchResult.ifPresentOrElse(
+                Human target = new Human.Builder().setLastName(lastName).build();
+                Comparator<Human> lastNameComparator = Comparator.comparing(Human::getLastName);
+                Optional<Human> result = search.search(humans, target, lastNameComparator);
+                result.ifPresentOrElse(
                         human -> System.out.println("Найдено: " + human),
                         () -> System.out.println("Человек с указанной фамилией не найден.")
                 );
