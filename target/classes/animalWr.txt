@@ -1,0 +1,12 @@
+Cat,Blue,false
+Dog,Blue,false
+Cat,Brown,false
+Dog,Brown,false
+Dog,Brown,false
+Dog,Green,false
+Bird,Blue,true
+Dog,Blue,true
+Cat,Brown,true
+Cat,Brown,true
+Dog,Brown,true
+Bird,Green,true

@@ -1,0 +1,9 @@
+100.0,Grain,Metal
+200.0,Grain,Metal
+200.0,Water,Metal
+100.0,Grain,Plastic
+200.0,Oil,Plastic
+200.0,Water,Plastic
+200.0,Water,Plastic
+50.0,Oil,Wood
+200.0,Oil,Wood
