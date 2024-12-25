@@ -10,7 +10,7 @@ public class RandomArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
     public RandomArrayFillingStrategy(BuildObject<T> builder) {
         this.builder = builder;
     }
-
+    private static final Random RANDOM = new Random();
     @Override
     public T[] fillArray(int length) {
         @SuppressWarnings("unchecked")
@@ -32,25 +32,25 @@ public class RandomArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
         switch (index) {
             case 0 -> {
                 if (builder instanceof com.example.getSource.factory.BuildAnimal) {
-                    String[] species = {"Cat", "Dog", "Bird"};
+                    String[] species = {"Собака", "Кошка", "Лошадь", "Рыба", "Корова", "Овца", "Курица", "Утка", "Верблюд", "Слон", "Тигр", "Лев", "Волк", "Лиса", "Заяц", "Тушкан"};
                     return species[random.nextInt(species.length)];
                 } else if (builder instanceof com.example.getSource.factory.BuildHuman) {
                     String[] genders = {"Мужчина", "Женщина"};
                     return genders[random.nextInt(genders.length)];
                 } else if (builder instanceof com.example.getSource.factory.BuildBarrel) {
-                    String[] volumes = {"50", "100", "200"};
-                    return volumes[random.nextInt(volumes.length)];
+                    //String[] volumes = {"50", "100", "200"};
+                    return String.valueOf(1 + (Math.round(99 * RANDOM.nextDouble())));
                 }
             }
             case 1 -> {
                 if (builder instanceof com.example.getSource.factory.BuildAnimal) {
-                    String[] eyeColors = {"Blue", "Green", "Brown"};
+                    String[] eyeColors = {"Карие", "Голубые", "Зелёные", "Серые", "Чёрные", "Жёлтые"};
                     return eyeColors[random.nextInt(eyeColors.length)];
                 } else if (builder instanceof com.example.getSource.factory.BuildHuman) {
-                    String[] ages = {"20", "30", "40", "50"};
-                    return ages[random.nextInt(ages.length)];
+                    //String[] ages = {"20", "30", "40", "50"};
+                    return String.valueOf(1 + random.nextInt(90));
                 } else if (builder instanceof com.example.getSource.factory.BuildBarrel) {
-                    String[] materials = {"Water", "Oil", "Grain"};
+                    String[] materials = {"Вода", "Масло", "Зерно", "Вино", "Мёд", "Нефть", "Бензин", "Сок", "Пиво", "Водочка"};
                     return materials[random.nextInt(materials.length)];
                 }
             }
@@ -59,10 +59,10 @@ public class RandomArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
                     String[] hasFur = {"true", "false"};
                     return hasFur[random.nextInt(hasFur.length)];
                 } else if (builder instanceof com.example.getSource.factory.BuildHuman) {
-                    String[] lastNames = {"Smith", "Johnson", "Brown"};
+                    String[] lastNames = {"Ангел", "Герц", "Бронте", "Ларсен", "Маршалл", "Маршак", "Мишель", "Перси", "Ривера", "Илон",};
                     return lastNames[random.nextInt(lastNames.length)];
                 } else if (builder instanceof com.example.getSource.factory.BuildBarrel) {
-                    String[] barrelMaterials = {"Wood", "Metal", "Plastic"};
+                    String[] barrelMaterials = {"Дерево", "Металл", "Пластик", "Керамика"};
                     return barrelMaterials[random.nextInt(barrelMaterials.length)];
                 }
             }
