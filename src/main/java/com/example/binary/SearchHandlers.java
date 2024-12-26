@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import com.example.sort.FileWriter;
 
 import static com.example.sort.FileWriter.fileToWrite;
-import static com.example.sort.FileWriter.saveSearchResult;
+
 
 public class SearchHandlers {
 
@@ -65,9 +65,9 @@ public class SearchHandlers {
 
                     System.out.print("Хотите сохранить результаты поиска в файл? (yes/no): ");
                     String saveChoice = scanner.nextLine();
-                    if (saveChoice.equalsIgnoreCase("yes" )) {
+                    if (saveChoice.equalsIgnoreCase("yes")) {
                         List<String> resultStrings = matchingAnimals.stream()
-                                .map(Object::toString)
+                                .map(animal -> String.join(",", animal.getSpecies(), animal.getEyeColor(), String.valueOf(animal.hasFur())))
                                 .collect(Collectors.toList());
                         fileToWrite(resultStrings);
                     }
@@ -92,7 +92,7 @@ public class SearchHandlers {
                     String saveChoice = scanner.nextLine();
                     if (saveChoice.equalsIgnoreCase("yes")) {
                         List<String> resultStrings = matchingAnimals.stream()
-                                .map(Object::toString)
+                                .map(animal -> String.join(",", animal.getSpecies(), animal.getEyeColor(), String.valueOf(animal.hasFur())))
                                 .collect(Collectors.toList());
                         fileToWrite(resultStrings);
                     }
@@ -117,7 +117,7 @@ public class SearchHandlers {
                     String saveChoice = scanner.nextLine();
                     if (saveChoice.equalsIgnoreCase("yes")) {
                         List<String> resultStrings = matchingAnimals.stream()
-                                .map(Object::toString)
+                                .map(animal -> String.join(",", animal.getSpecies(), animal.getEyeColor(), String.valueOf(animal.hasFur())))
                                 .collect(Collectors.toList());
                         fileToWrite(resultStrings);
                     }
@@ -153,6 +153,14 @@ public class SearchHandlers {
                 } else {
                     System.out.println("Найдено совпадений: " + matchingBarrels.size());
                     matchingBarrels.forEach(System.out::println);
+                    System.out.print("Хотите сохранить результаты поиска в файл? (yes/no): ");
+                    String saveChoice = scanner.nextLine();
+                    if (saveChoice.equalsIgnoreCase("yes")) {
+                        List<String> resultStrings = matchingBarrels.stream()
+                                .map(barrel -> String.join(",", String.valueOf(barrel.getVolume()), barrel.getStoredMaterial(), barrel.getMaterial()))
+                                .collect(Collectors.toList());
+                        fileToWrite(resultStrings);
+                    }
                 }
             }
             case 2 -> {
@@ -169,6 +177,14 @@ public class SearchHandlers {
                 } else {
                     System.out.println("Найдено совпадений: " + matchingBarrels.size());
                     matchingBarrels.forEach(System.out::println);
+                    System.out.print("Хотите сохранить результаты поиска в файл? (yes/no): ");
+                    String saveChoice = scanner.nextLine();
+                    if (saveChoice.equalsIgnoreCase("yes")) {
+                        List<String> resultStrings = matchingBarrels.stream()
+                                .map(barrel -> String.join(",", String.valueOf(barrel.getVolume()), barrel.getStoredMaterial(), barrel.getMaterial()))
+                                .collect(Collectors.toList());
+                        fileToWrite(resultStrings);
+                    }
                 }
             }
             case 3 -> {
@@ -185,6 +201,14 @@ public class SearchHandlers {
                 } else {
                     System.out.println("Найдено совпадений: " + matchingBarrels.size());
                     matchingBarrels.forEach(System.out::println);
+                    System.out.print("Хотите сохранить результаты поиска в файл? (yes/no): ");
+                    String saveChoice = scanner.nextLine();
+                    if (saveChoice.equalsIgnoreCase("yes")) {
+                        List<String> resultStrings = matchingBarrels.stream()
+                                .map(barrel -> String.join(",", String.valueOf(barrel.getVolume()), barrel.getStoredMaterial(), barrel.getMaterial()))
+                                .collect(Collectors.toList());
+                        fileToWrite(resultStrings);
+                    }
                 }
             }
             case 4 -> System.out.println("Возврат в предыдущее меню.");
@@ -217,6 +241,14 @@ public class SearchHandlers {
                 } else {
                     System.out.println("Найдено совпадений: " + matchingHumans.size());
                     matchingHumans.forEach(System.out::println);
+                    System.out.print("Хотите сохранить результаты поиска в файл? (yes/no): ");
+                    String saveChoice = scanner.nextLine();
+                    if (saveChoice.equalsIgnoreCase("yes")) {
+                        List<String> resultStrings = matchingHumans.stream()
+                                .map(human -> String.join(",", human.getGender(), String.valueOf(human.getAge()), human.getLastName()))
+                                .collect(Collectors.toList());
+                        fileToWrite(resultStrings);
+                    }
                 }
             }
             case 2 -> {
@@ -233,6 +265,14 @@ public class SearchHandlers {
                 } else {
                     System.out.println("Найдено совпадений: " + matchingHumans.size());
                     matchingHumans.forEach(System.out::println);
+                    System.out.print("Хотите сохранить результаты поиска в файл? (yes/no): ");
+                    String saveChoice = scanner.nextLine();
+                    if (saveChoice.equalsIgnoreCase("yes")) {
+                        List<String> resultStrings = matchingHumans.stream()
+                                .map(human -> String.join(",", human.getGender(), String.valueOf(human.getAge()), human.getLastName()))
+                                .collect(Collectors.toList());
+                        fileToWrite(resultStrings);
+                    }
                 }
             }
             case 3 -> {
@@ -249,6 +289,14 @@ public class SearchHandlers {
                 } else {
                     System.out.println("Найдено совпадений: " + matchingHumans.size());
                     matchingHumans.forEach(System.out::println);
+                    System.out.print("Хотите сохранить результаты поиска в файл? (yes/no): ");
+                    String saveChoice = scanner.nextLine();
+                    if (saveChoice.equalsIgnoreCase("yes")) {
+                        List<String> resultStrings = matchingHumans.stream()
+                                .map(human -> String.join(",", human.getGender(), String.valueOf(human.getAge()), human.getLastName()))
+                                .collect(Collectors.toList());
+                        fileToWrite(resultStrings);
+                    }
                 }
             }
             case 4 -> System.out.println("Возврат в предыдущее меню.");
