@@ -45,7 +45,6 @@ public class SearchHandlers {
                 "\n 4. Назад");
 
         int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
-        GenericBinarySearch<Animal> search = new GenericBinarySearch<>();
 
         switch (searchField) {
             case 1 -> {
@@ -54,7 +53,7 @@ public class SearchHandlers {
                 String species = scanner.nextLine();
 
                 List<Animal> matchingAnimals = Arrays.stream(animals)
-                        .filter(animal -> species.equals(animal.getSpecies()))
+                        .filter(animal -> animal.getSpecies().equalsIgnoreCase(species))
                         .collect(Collectors.toList());
 
                 if (matchingAnimals.isEmpty()) {
@@ -79,7 +78,7 @@ public class SearchHandlers {
                 String eyeColor = scanner.nextLine();
 
                 List<Animal> matchingAnimals = Arrays.stream(animals)
-                        .filter(animal -> eyeColor.equals(animal.getEyeColor()))
+                        .filter(animal -> animal.getEyeColor().equalsIgnoreCase(eyeColor))
                         .collect(Collectors.toList());
 
                 if (matchingAnimals.isEmpty()) {
@@ -136,7 +135,6 @@ public class SearchHandlers {
                 "\n 4. Назад");
 
         int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
-        GenericBinarySearch<Barrel> search = new GenericBinarySearch<>();
 
         switch (searchField) {
             case 1 -> {
@@ -169,7 +167,7 @@ public class SearchHandlers {
                 String storedMaterial = scanner.nextLine();
 
                 List<Barrel> matchingBarrels = Arrays.stream(barrels)
-                        .filter(barrel -> storedMaterial.equals(barrel.getStoredMaterial()))
+                        .filter(barrel -> barrel.getStoredMaterial().equalsIgnoreCase(storedMaterial))
                         .collect(Collectors.toList());
 
                 if (matchingBarrels.isEmpty()) {
@@ -193,7 +191,7 @@ public class SearchHandlers {
                 String material = scanner.nextLine();
 
                 List<Barrel> matchingBarrels = Arrays.stream(barrels)
-                        .filter(barrel -> material.equals(barrel.getMaterial()))
+                        .filter(barrel -> barrel.getMaterial().equalsIgnoreCase(material))
                         .collect(Collectors.toList());
 
                 if (matchingBarrels.isEmpty()) {
@@ -224,7 +222,6 @@ public class SearchHandlers {
                 "\n 4. Назад");
 
         int searchField = validateIntegerInput(scanner, "Введите ваш выбор: ");
-        GenericBinarySearch<Human> search = new GenericBinarySearch<>();
 
         switch (searchField) {
             case 1 -> {
@@ -233,7 +230,7 @@ public class SearchHandlers {
                 String gender = scanner.nextLine();
 
                 List<Human> matchingHumans = Arrays.stream(humans)
-                        .filter(human -> gender.equals(human.getGender()))
+                        .filter(human -> human.getGender().equalsIgnoreCase(gender))
                         .collect(Collectors.toList());
 
                 if (matchingHumans.isEmpty()) {
@@ -281,7 +278,7 @@ public class SearchHandlers {
                 String lastName = scanner.nextLine();
 
                 List<Human> matchingHumans = Arrays.stream(humans)
-                        .filter(human -> lastName.equals(human.getLastName()))
+                        .filter(human -> human.getLastName().equalsIgnoreCase(lastName))
                         .collect(Collectors.toList());
 
                 if (matchingHumans.isEmpty()) {

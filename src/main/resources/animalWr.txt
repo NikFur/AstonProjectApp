@@ -10,3 +10,9 @@ Cat,Brown,true
 Cat,Brown,true
 Dog,Brown,true
 Bird,Green,true
+Корова,Зелёные,false
+Лев,Серые,false
+Лев,Серые,true
+Волк,Чёрные,true
+Лиса,Чёрные,true
+Слон,Чёрные,true
