@@ -13,7 +13,6 @@ public class BuildBarrel implements BuildObject<Barrel> {
     public Barrel create(String value1, String value2, String value3) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
-            // Validate and re-enter value1 (volume)
             while (true) {
                 try {
                     if (value1 == null || value1.trim().isEmpty()) {
@@ -24,21 +23,19 @@ public class BuildBarrel implements BuildObject<Barrel> {
                         break;
                     } else {
                         System.out.println("Объем должен быть положительным числом.");
-                        value1 = null; // Reset for re-entry
+                        value1 = null;
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Пожалуйста, введите корректное число.");
-                    value1 = null; // Reset for re-entry
+                    value1 = null;
                 }
             }
 
-            // Validate and re-enter value2 (stored material)
             while (value2 == null || value2.trim().isEmpty()) {
                 System.out.print("Введите хранимый материал (не может быть пустым): ");
                 value2 = reader.readLine().trim();
             }
 
-            // Validate and re-enter value3 (material)
             while (value3 == null || value3.trim().isEmpty()) {
                 System.out.print("Введите материал бочки: ");
                 value3 = reader.readLine().trim();
@@ -47,7 +44,6 @@ public class BuildBarrel implements BuildObject<Barrel> {
             throw new RuntimeException("Произошла ошибка ввода-вывода: " + e.getMessage(), e);
         }
 
-        // Create and return the Barrel object
         Barrel.Builder builder = new Barrel.Builder();
         return builder
                 .setVolume(Double.parseDouble(value1))

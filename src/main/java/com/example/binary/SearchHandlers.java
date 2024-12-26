@@ -3,10 +3,14 @@ package com.example.binary;
 import com.example.entity.Animal.Animal;
 import com.example.entity.Barrel.Barrel;
 import com.example.entity.Human.Human;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.Scanner;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import com.example.sort.FileWriter;
+
+import static com.example.sort.FileWriter.fileToWrite;
+import static com.example.sort.FileWriter.saveSearchResult;
 
 public class SearchHandlers {
 
@@ -48,37 +52,76 @@ public class SearchHandlers {
                 System.out.print("Введите вид для поиска: ");
                 scanner.nextLine();
                 String species = scanner.nextLine();
-                Animal target = new Animal.Builder().setSpecies(species).build();
-                Comparator<Animal> speciesComparator = Comparator.comparing(Animal::getSpecies);
-                Optional<Animal> result = search.search(animals, target, speciesComparator);
-                result.ifPresentOrElse(
-                        animal -> System.out.println("Найдено: " + animal),
-                        () -> System.out.println("Животное с указанным видом не найдено.")
-                );
+
+                List<Animal> matchingAnimals = Arrays.stream(animals)
+                        .filter(animal -> species.equals(animal.getSpecies()))
+                        .collect(Collectors.toList());
+
+                if (matchingAnimals.isEmpty()) {
+                    System.out.println("Животное с указанным видом не найдено.");
+                } else {
+                    System.out.println("Найдено совпадений: " + matchingAnimals.size());
+                    matchingAnimals.forEach(System.out::println);
+
+                    System.out.print("Хотите сохранить результаты поиска в файл? (yes/no): ");
+                    String saveChoice = scanner.nextLine();
+                    if (saveChoice.equalsIgnoreCase("yes" )) {
+                        List<String> resultStrings = matchingAnimals.stream()
+                                .map(Object::toString)
+                                .collect(Collectors.toList());
+                        fileToWrite(resultStrings);
+                    }
+                }
             }
             case 2 -> {
                 System.out.print("Введите цвет глаз для поиска: ");
                 scanner.nextLine();
                 String eyeColor = scanner.nextLine();
-                Animal target = new Animal.Builder().setEyeColor(eyeColor).build();
-                Comparator<Animal> eyeColorComparator = Comparator.comparing(Animal::getEyeColor);
-                Optional<Animal> result = search.search(animals, target, eyeColorComparator);
-                result.ifPresentOrElse(
-                        animal -> System.out.println("Найдено: " + animal),
-                        () -> System.out.println("Животное с указанным цветом глаз не найдено.")
-                );
+
+                List<Animal> matchingAnimals = Arrays.stream(animals)
+                        .filter(animal -> eyeColor.equals(animal.getEyeColor()))
+                        .collect(Collectors.toList());
+
+                if (matchingAnimals.isEmpty()) {
+                    System.out.println("Животное с указанным цветом глаз не найдено.");
+                } else {
+                    System.out.println("Найдено совпадений: " + matchingAnimals.size());
+                    matchingAnimals.forEach(System.out::println);
+
+                    System.out.print("Хотите сохранить результаты поиска в файл? (yes/no): ");
+                    String saveChoice = scanner.nextLine();
+                    if (saveChoice.equalsIgnoreCase("yes")) {
+                        List<String> resultStrings = matchingAnimals.stream()
+                                .map(Object::toString)
+                                .collect(Collectors.toList());
+                        fileToWrite(resultStrings);
+                    }
+                }
             }
             case 3 -> {
                 System.out.print("Введите наличие шерсти (true/false) для поиска: ");
                 scanner.nextLine();
                 boolean hasFur = Boolean.parseBoolean(scanner.nextLine());
-                Animal target = new Animal.Builder().setHasFur(hasFur).build();
-                Comparator<Animal> hasFurComparator = Comparator.comparing(Animal::hasFur);
-                Optional<Animal> result = search.search(animals, target, hasFurComparator);
-                result.ifPresentOrElse(
-                        animal -> System.out.println("Найдено: " + animal),
-                        () -> System.out.println("Животное с указанным параметром наличия шерсти не найдено.")
-                );
+
+                List<Animal> matchingAnimals = Arrays.stream(animals)
+                        .filter(animal -> animal.hasFur() == hasFur)
+                        .collect(Collectors.toList());
+
+                if (matchingAnimals.isEmpty()) {
+                    System.out.println("Животное с указанным параметром наличия шерсти не найдено.");
+                } else {
+                    System.out.println("Найдено совпадений: " + matchingAnimals.size());
+                    matchingAnimals.forEach(System.out::println);
+
+                    System.out.print("Хотите сохранить результаты поиска в файл? (yes/no): ");
+                    String saveChoice = scanner.nextLine();
+                    if (saveChoice.equalsIgnoreCase("yes")) {
+                        List<String> resultStrings = matchingAnimals.stream()
+                                .map(Object::toString)
+                                .collect(Collectors.toList());
+                        fileToWrite(resultStrings);
+                    }
+                }
             }
             case 4 -> System.out.println("Возврат в предыдущее меню.");
             default -> System.out.println("Неверный выбор. Попробуйте снова.");
@@ -100,37 +143,49 @@ public class SearchHandlers {
                 System.out.print("Введите объём для поиска: ");
                 scanner.nextLine();
                 double volume = Double.parseDouble(scanner.nextLine());
-                Barrel target = new Barrel.Builder().setVolume(volume).build();
-                Comparator<Barrel> volumeComparator = Comparator.comparingDouble(Barrel::getVolume);
-                Optional<Barrel> result = search.search(barrels, target, volumeComparator);
-                result.ifPresentOrElse(
-                        barrel -> System.out.println("Найдено: " + barrel),
-                        () -> System.out.println("Бочка с таким объемом не найдена.")
-                );
+
+                List<Barrel> matchingBarrels = Arrays.stream(barrels)
+                        .filter(barrel -> barrel.getVolume() == volume)
+                        .collect(Collectors.toList());
+
+                if (matchingBarrels.isEmpty()) {
+                    System.out.println("Бочка с таким объемом не найдена.");
+                } else {
+                    System.out.println("Найдено совпадений: " + matchingBarrels.size());
+                    matchingBarrels.forEach(System.out::println);
+                }
             }
             case 2 -> {
                 System.out.print("Введите хранимый материал для поиска: ");
                 scanner.nextLine();
                 String storedMaterial = scanner.nextLine();
-                Barrel target = new Barrel.Builder().setStoredMaterial(storedMaterial).build();
-                Comparator<Barrel> storedMaterialComparator = Comparator.comparing(Barrel::getStoredMaterial);
-                Optional<Barrel> result = search.search(barrels, target, storedMaterialComparator);
-                result.ifPresentOrElse(
-                        barrel -> System.out.println("Найдено: " + barrel),
-                        () -> System.out.println("Бочка с указанным хранимым материалом не найдена.")
-                );
+
+                List<Barrel> matchingBarrels = Arrays.stream(barrels)
+                        .filter(barrel -> storedMaterial.equals(barrel.getStoredMaterial()))
+                        .collect(Collectors.toList());
+
+                if (matchingBarrels.isEmpty()) {
+                    System.out.println("Бочка с указанным хранимым материалом не найдена.");
+                } else {
+                    System.out.println("Найдено совпадений: " + matchingBarrels.size());
+                    matchingBarrels.forEach(System.out::println);
+                }
             }
             case 3 -> {
                 System.out.print("Введите материал бочки для поиска: ");
                 scanner.nextLine();
                 String material = scanner.nextLine();
-                Barrel target = new Barrel.Builder().setMaterial(material).build();
-                Comparator<Barrel> materialComparator = Comparator.comparing(Barrel::getMaterial);
-                Optional<Barrel> result = search.search(barrels, target, materialComparator);
-                result.ifPresentOrElse(
-                        barrel -> System.out.println("Найдено: " + barrel),
-                        () -> System.out.println("Бочка с указанным материалом не найдена.")
-                );
+
+                List<Barrel> matchingBarrels = Arrays.stream(barrels)
+                        .filter(barrel -> material.equals(barrel.getMaterial()))
+                        .collect(Collectors.toList());
+
+                if (matchingBarrels.isEmpty()) {
+                    System.out.println("Бочка с указанным материалом не найдена.");
+                } else {
+                    System.out.println("Найдено совпадений: " + matchingBarrels.size());
+                    matchingBarrels.forEach(System.out::println);
+                }
             }
             case 4 -> System.out.println("Возврат в предыдущее меню.");
             default -> System.out.println("Неверный выбор. Попробуйте снова.");
@@ -152,37 +207,49 @@ public class SearchHandlers {
                 System.out.print("Введите пол для поиска: ");
                 scanner.nextLine();
                 String gender = scanner.nextLine();
-                Human target = new Human.Builder().setGender(gender).build();
-                Comparator<Human> genderComparator = Comparator.comparing(Human::getGender);
-                Optional<Human> result = search.search(humans, target, genderComparator);
-                result.ifPresentOrElse(
-                        human -> System.out.println("Найдено: " + human),
-                        () -> System.out.println("Человек с указанным полом не найден.")
-                );
+
+                List<Human> matchingHumans = Arrays.stream(humans)
+                        .filter(human -> gender.equals(human.getGender()))
+                        .collect(Collectors.toList());
+
+                if (matchingHumans.isEmpty()) {
+                    System.out.println("Человек с указанным полом не найден.");
+                } else {
+                    System.out.println("Найдено совпадений: " + matchingHumans.size());
+                    matchingHumans.forEach(System.out::println);
+                }
             }
             case 2 -> {
                 System.out.print("Введите возраст для поиска: ");
                 scanner.nextLine();
                 int age = Integer.parseInt(scanner.nextLine());
-                Human target = new Human.Builder().setAge(age).build();
-                Comparator<Human> ageComparator = Comparator.comparingInt(Human::getAge);
-                Optional<Human> result = search.search(humans, target, ageComparator);
-                result.ifPresentOrElse(
-                        human -> System.out.println("Найдено: " + human),
-                        () -> System.out.println("Человек с указанным возрастом не найден.")
-                );
+
+                List<Human> matchingHumans = Arrays.stream(humans)
+                        .filter(human -> human.getAge() == age)
+                        .collect(Collectors.toList());
+
+                if (matchingHumans.isEmpty()) {
+                    System.out.println("Человек с указанным возрастом не найден.");
+                } else {
+                    System.out.println("Найдено совпадений: " + matchingHumans.size());
+                    matchingHumans.forEach(System.out::println);
+                }
             }
             case 3 -> {
                 System.out.print("Введите фамилию для поиска: ");
                 scanner.nextLine();
                 String lastName = scanner.nextLine();
-                Human target = new Human.Builder().setLastName(lastName).build();
-                Comparator<Human> lastNameComparator = Comparator.comparing(Human::getLastName);
-                Optional<Human> result = search.search(humans, target, lastNameComparator);
-                result.ifPresentOrElse(
-                        human -> System.out.println("Найдено: " + human),
-                        () -> System.out.println("Человек с указанной фамилией не найден.")
-                );
+
+                List<Human> matchingHumans = Arrays.stream(humans)
+                        .filter(human -> lastName.equals(human.getLastName()))
+                        .collect(Collectors.toList());
+
+                if (matchingHumans.isEmpty()) {
+                    System.out.println("Человек с указанной фамилией не найден.");
+                } else {
+                    System.out.println("Найдено совпадений: " + matchingHumans.size());
+                    matchingHumans.forEach(System.out::println);
+                }
             }
             case 4 -> System.out.println("Возврат в предыдущее меню.");
             default -> System.out.println("Неверный выбор. Попробуйте снова.");

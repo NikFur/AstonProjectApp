@@ -43,7 +43,6 @@ public class SortingService {
         System.out.println("Массив после сортировки по цвету глаз: " + Arrays.toString(animals));
         TimSort.timSort(animals, Comparator.comparing(Animal::hasFur));
         System.out.println("Массив после сортировки по наличию шерсти: " + Arrays.toString(animals));
-        // Конвертация Barrel[] to List<String> Animal[] to List<String>
         List<String> animalList = Arrays.stream(animals)
                 .map(animal -> String.format("%s,%s,%b",
                         animal.getSpecies(),
@@ -51,13 +50,11 @@ public class SortingService {
                         animal.hasFur()))
                 .collect(Collectors.toList());
 
-        // Ask the user whether to save the file
         Scanner scanner = new Scanner(System.in);
         System.out.print("Вы хотите сохранить данные в файл? (yes(да)/no(нет)): ");
         String userResponse = scanner.nextLine().trim().toLowerCase();
 
         if (userResponse.equals("yes") || userResponse.equals("да")) {
-            // Write the list to a file
             fileToWrite(animalList);
         } else {
             System.out.println("Выход в меню....");
@@ -74,20 +71,17 @@ public class SortingService {
         System.out.println("Массив после сортировки по фамилии: " + Arrays.toString(humans));
         TimSort.timSort(humans, new AgeAndVolComparator());
         System.out.println("Массив после сортировки по возрасту с учетом условий: " + Arrays.toString(humans));
-        // Конвертация Barrel[] to List<String> Human[] to List<String>
         List<String> humanList = Arrays.stream(humans)
                 .map(human -> String.format("%s,%s,%s",
                         human.getGender(),
                         human.getAge(),
                         human.getLastName()))
                 .collect(Collectors.toList());
-        // Ask the user whether to save the file
         Scanner scanner = new Scanner(System.in);
         System.out.print("Вы хотите сохранить данные в файл? (yes(да)/no(нет)): ");
         String userResponse = scanner.nextLine().trim().toLowerCase();
 
         if (userResponse.equals("yes") || userResponse.equals("да")) {
-            // Write the list to a file
             fileToWrite(humanList);
         } else {
             System.out.println("Выход в меню....");
@@ -104,20 +98,17 @@ public class SortingService {
         System.out.println("Массив после сортировки по материалу бочки: " + Arrays.toString(barrels));
         TimSort.timSort(barrels, new AgeAndVolComparator());
         System.out.println("Массив после сортировки по объему с учетом условий: " + Arrays.toString(barrels));
-        // Конвертация Barrel[] to List<String>
         List<String> barrelList = Arrays.stream(barrels)
                 .map(barrel -> String.format("%s,%s,%s",
                         barrel.getVolume(),
                         barrel.getStoredMaterial(),
                         barrel.getMaterial()))
                 .collect(Collectors.toList());
-        // Ask the user whether to save the file
         Scanner scanner = new Scanner(System.in);
         System.out.print("Вы хотите сохранить данные в файл? (yes(да)/no(нет)): ");
         String userResponse = scanner.nextLine().trim().toLowerCase();
 
         if (userResponse.equals("yes") || userResponse.equals("да")) {
-            // Write the list to a file
             fileToWrite(barrelList);
         } else {
             System.out.println("Выход в меню....");

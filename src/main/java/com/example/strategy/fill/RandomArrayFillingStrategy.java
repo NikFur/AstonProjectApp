@@ -10,7 +10,6 @@ public class RandomArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
     public RandomArrayFillingStrategy(BuildObject<T> builder) {
         this.builder = builder;
     }
-    private static final Random RANDOM = new Random();
     @Override
     public T[] fillArray(int length) {
         @SuppressWarnings("unchecked")
@@ -38,8 +37,7 @@ public class RandomArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
                     String[] genders = {"Мужчина", "Женщина"};
                     return genders[random.nextInt(genders.length)];
                 } else if (builder instanceof com.example.getSource.factory.BuildBarrel) {
-                    //String[] volumes = {"50", "100", "200"};
-                    return String.valueOf(1 + (Math.round(99 * RANDOM.nextDouble())));
+                    return String.valueOf(1 + (Math.round(99 * random.nextDouble())));
                 }
             }
             case 1 -> {
@@ -47,7 +45,6 @@ public class RandomArrayFillingStrategy<T> implements ArrayFillingStrategy<T> {
                     String[] eyeColors = {"Карие", "Голубые", "Зелёные", "Серые", "Чёрные", "Жёлтые"};
                     return eyeColors[random.nextInt(eyeColors.length)];
                 } else if (builder instanceof com.example.getSource.factory.BuildHuman) {
-                    //String[] ages = {"20", "30", "40", "50"};
                     return String.valueOf(1 + random.nextInt(90));
                 } else if (builder instanceof com.example.getSource.factory.BuildBarrel) {
                     String[] materials = {"Вода", "Масло", "Зерно", "Вино", "Мёд", "Нефть", "Бензин", "Сок", "Пиво", "Водочка"};
