@@ -38,9 +38,9 @@ public class Application {
 
             int objectType = validateIntegerInput(scanner, "Введите ваш выбор: ");
             switch (objectType) {
-                case 1 -> handleObject(scanner, new BuildAnimal(), Animal.class);
-                case 2 -> handleObject(scanner, new BuildHuman(), Human.class);
-                case 3 -> handleObject(scanner, new BuildBarrel(), Barrel.class);
+                case 1 -> handleObject(scanner, new BuildAnimal());
+                case 2 -> handleObject(scanner, new BuildHuman());
+                case 3 -> handleObject(scanner, new BuildBarrel());
                 case 4 -> {
                     running = false;
                     System.out.println("Выход из приложения.");
@@ -52,7 +52,7 @@ public class Application {
         scanner.close();
     }
 
-    private static <T> void handleObject(Scanner scanner, BuildObject<T> builder, Class<T> typeClass) {
+    private static <T> void handleObject(Scanner scanner, BuildObject<T> builder) {
         ArrayFillingContext<T> fillingContext = new ArrayFillingContext<>();
         boolean running = true;
         T[] dataArray = null;

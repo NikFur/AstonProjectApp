@@ -1,9 +1,5 @@
 package com.example.sort;
 
-import com.example.entity.Animal.Animal;
-import com.example.entity.Barrel.Barrel;
-import com.example.entity.Human.Human;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -16,14 +12,12 @@ import java.util.Scanner;
 public class FileWriter {
     public static void fileToWrite (List<String> arrayTo) {
 
-        List<String> arrayData = arrayTo;
-
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите имя сохраняемого файла (например, data, animal): ");
         String fileName = scanner.nextLine();
 
         Path filePath = Paths.get("src/main/resources/" + fileName + ".txt");
-        appendDataToFile(filePath, arrayData);
+        appendDataToFile(filePath, arrayTo);
     }
 
 

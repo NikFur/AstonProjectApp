@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import com.example.sort.FileWriter;
 
 import static com.example.sort.FileWriter.fileToWrite;
 
@@ -38,11 +37,11 @@ public class SortingService {
     private static void sortAnimals(Animal[] animals) {
         System.out.println("Массив до сортировки: " + Arrays.toString(animals));
         TimSort.timSort(animals, Comparator.comparing(Animal::getSpecies));
-        System.out.println("Массив после сортировки по виду: " + Arrays.toString(animals));
+        System.out.println("\nМассив после сортировки по виду: " + Arrays.toString(animals));
         TimSort.timSort(animals, Comparator.comparing(Animal::getEyeColor));
-        System.out.println("Массив после сортировки по цвету глаз: " + Arrays.toString(animals));
+        System.out.println("\nМассив после сортировки по цвету глаз: " + Arrays.toString(animals));
         TimSort.timSort(animals, Comparator.comparing(Animal::hasFur));
-        System.out.println("Массив после сортировки по наличию шерсти: " + Arrays.toString(animals));
+        System.out.println("\nМассив после сортировки по наличию шерсти: " + Arrays.toString(animals));
         List<String> animalList = Arrays.stream(animals)
                 .map(animal -> String.format("%s,%s,%b",
                         animal.getSpecies(),
@@ -64,13 +63,13 @@ public class SortingService {
     private static void sortHumans(Human[] humans) {
         System.out.println("Массив до сортировки: " + Arrays.toString(humans));
         TimSort.timSort(humans, Comparator.comparing(Human::getGender));
-        System.out.println("Массив после сортировки по полу: " + Arrays.toString(humans));
+        System.out.println("\nМассив после сортировки по полу: " + Arrays.toString(humans));
         TimSort.timSort(humans, Comparator.comparing(Human::getAge));
-        System.out.println("Массив после сортировки по возрасту: " + Arrays.toString(humans));
+        System.out.println("\nМассив после сортировки по возрасту: " + Arrays.toString(humans));
         TimSort.timSort(humans, Comparator.comparing(Human::getLastName));
-        System.out.println("Массив после сортировки по фамилии: " + Arrays.toString(humans));
+        System.out.println("\nМассив после сортировки по фамилии: " + Arrays.toString(humans));
         TimSort.timSort(humans, new AgeAndVolComparator());
-        System.out.println("Массив после сортировки по возрасту с учетом условий: " + Arrays.toString(humans));
+        System.out.println("\nМассив после сортировки по возрасту с учетом условий: " + Arrays.toString(humans));
         List<String> humanList = Arrays.stream(humans)
                 .map(human -> String.format("%s,%s,%s",
                         human.getGender(),
@@ -91,13 +90,13 @@ public class SortingService {
     private static void sortBarrels(Barrel[] barrels) {
         System.out.println("Массив до сортировки: " + Arrays.toString(barrels));
         TimSort.timSort(barrels, Comparator.comparing(Barrel::getVolume));
-        System.out.println("Массив после сортировки по объему: " + Arrays.toString(barrels));
+        System.out.println("\nМассив после сортировки по объему: " + Arrays.toString(barrels));
         TimSort.timSort(barrels, Comparator.comparing(Barrel::getStoredMaterial));
-        System.out.println("Массив после сортировки по хранимому материалу: " + Arrays.toString(barrels));
+        System.out.println("\nМассив после сортировки по хранимому материалу: " + Arrays.toString(barrels));
         TimSort.timSort(barrels, Comparator.comparing(Barrel::getMaterial));
-        System.out.println("Массив после сортировки по материалу бочки: " + Arrays.toString(barrels));
+        System.out.println("\nМассив после сортировки по материалу бочки: " + Arrays.toString(barrels));
         TimSort.timSort(barrels, new AgeAndVolComparator());
-        System.out.println("Массив после сортировки по объему с учетом условий: " + Arrays.toString(barrels));
+        System.out.println("\nМассив после сортировки по объему с учетом условий: " + Arrays.toString(barrels));
         List<String> barrelList = Arrays.stream(barrels)
                 .map(barrel -> String.format("%s,%s,%s",
                         barrel.getVolume(),
