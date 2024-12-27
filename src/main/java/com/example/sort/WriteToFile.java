@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class FileWriter {
+public class WriteToFile {
     public static void fileToWrite (List<String> arrayTo) {
 
         Scanner scanner = new Scanner(System.in);

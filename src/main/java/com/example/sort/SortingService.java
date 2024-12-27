@@ -10,7 +10,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 
-import static com.example.sort.FileWriter.fileToWrite;
+import static com.example.sort.WriteToFile.fileToWrite;
 
 
 public class SortingService {

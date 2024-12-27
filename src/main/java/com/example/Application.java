@@ -2,12 +2,10 @@ package com.example;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Scanner;
 import com.example.binary.SearchHandlers;
 import com.example.context.ArrayFillingContext;
-import com.example.entity.Animal.Animal;
-import com.example.entity.Human.Human;
-import com.example.entity.Barrel.Barrel;
 import com.example.getSource.factory.BuildAnimal;
 import com.example.getSource.factory.BuildBarrel;
 import com.example.getSource.factory.BuildHuman;
@@ -31,9 +29,9 @@ public class Application {
 
         while (running) {
             System.out.println("Выберите тип данных для заполнения массива:" +
-                    "\n 1. Animal" +
-                    "\n 2. Human" +
-                    "\n 3. Barrel" +
+                    "\n 1. Животное" +
+                    "\n 2. Человек" +
+                    "\n 3. Бочка" +
                     "\n 4. Выход");
 
             int objectType = validateIntegerInput(scanner, "Введите ваш выбор: ");
@@ -132,22 +130,19 @@ public class Application {
     }
 
     private static int calculateFileLengthFromResources(String fileName) {
-        int length = 0;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                Application.class.getClassLoader().getResourceAsStream(fileName)))) {
+                Objects.requireNonNull(Application.class.getClassLoader().getResourceAsStream(fileName),
+                        "Файл не найден в resources: " + fileName)))) {
 
-            if (reader == null) {
-                System.out.println("Файл не найден в resources: " + fileName);
-                return 0;
-            }
-
+            int length = 0;
             while (reader.readLine() != null) {
                 length++;
             }
+            return length;
         } catch (Exception e) {
             System.out.println("Ошибка при чтении файла: " + e.getMessage());
         }
-        return length;
+        return 0;
     }
 }
 

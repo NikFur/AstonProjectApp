@@ -5,7 +5,6 @@ import com.example.entity.Barrel.Barrel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 public class BuildBarrel implements BuildObject<Barrel> {
 
@@ -50,14 +49,5 @@ public class BuildBarrel implements BuildObject<Barrel> {
                 .setStoredMaterial(value2)
                 .setMaterial(value3)
                 .build();
-    }
-
-    @Override
-    public List<String> getQuestions() {
-        return List.of(
-                "Введите объем бочки: ",
-                "Введите хранимый материал: ",
-                "Введите материал бочки: "
-        );
     }
 }

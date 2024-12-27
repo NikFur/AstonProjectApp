@@ -5,7 +5,6 @@ import com.example.entity.Animal.Animal;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 public class BuildAnimal implements BuildObject<Animal> {
 
@@ -37,14 +36,5 @@ public class BuildAnimal implements BuildObject<Animal> {
                 .setEyeColor(value2)
                 .setHasFur(Boolean.parseBoolean(value3))
                 .build();
-    }
-
-    @Override
-    public List<String> getQuestions() {
-        return List.of(
-                "Введите вид животного: ",
-                "Введите цвет глаз животного: ",
-                "Есть ли шерсть (true/false): "
-        );
     }
 }
